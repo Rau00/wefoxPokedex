@@ -23,7 +23,8 @@ Technologies:
 - Koin -> Dependences injection
     - It is written in kotlin, so it is more efficient when the application is written in kotlin, on the other hand the learning curve is less than dagger2
 
-- Expresso and JUnit: Testing
+- JUnit: Testing
+- Not incluyed in this test, to integration testing --> Expresso
 
 ![alt text](https://github.com/Rau00/wefoxPokedex/blob/master/architectureMVVM%2BRouter.png)
 
