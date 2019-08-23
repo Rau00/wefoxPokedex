@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">WeFoxPokedex</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_backpack_empty">Backpack is empty!!</string>
+    <string name="message_backpack_empty">You have the backpack empty, but you can go hunting!!</string>
+    <string name="positive_backpack_empty">Go hunting</string>
+    <string name="negative_backpack_empty">Later</string>
+
+    <!-- Hunt Screen -->
+    <string name="hunt_height">Height: </string>
+    <string name="hunt_weight">Weight: </string>
+    <string name="hunt_catch">Catch it!</string>
+    <string name="hunt_leave">Leave it</string>
+    <string name="hunt_Search">Search pokemon</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_height">Height: </string>
+    <string name="detail_weight">Weight: </string>
+    <string name="detail_catched">Catched: </string>
+    <string name="detail_experience">Experience: </string>
+    <string name="detail_type">Type: </string>
+
+</resources>
