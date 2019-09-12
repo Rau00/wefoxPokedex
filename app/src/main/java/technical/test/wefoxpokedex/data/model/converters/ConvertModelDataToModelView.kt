@@ -1,4 +1,4 @@
-package technical.test.wefoxpokedex.utils.view
+package technical.test.wefoxpokedex.data.model.converters
 
 import technical.test.wefoxpokedex.data.model.source.PokemonModel
 import technical.test.wefoxpokedex.data.model.source.PokemonType
@@ -16,7 +16,9 @@ class ConvertModelDataToModelView {
                 sprite = pokemonData.sprites.front_default,
                 dateCatched = pokemonData.dateCatched,
                 baseExperience = pokemonData.baseExperience.toString(),
-                types = getTypes(pokemonData.types)
+                types = getTypes(
+                    pokemonData.types
+                )
             )
         }
 
@@ -31,7 +33,11 @@ class ConvertModelDataToModelView {
         fun dataToViewModelList(pokemonDataList: List<PokemonModel>):MutableList<PokemonModelView> {
             val pokemonView = mutableListOf<PokemonModelView>()
             for (pokemon in pokemonDataList) {
-                pokemonView.add(ConvertModelDataToModelView.dataToViewModel(pokemon))
+                pokemonView.add(
+                    dataToViewModel(
+                        pokemon
+                    )
+                )
             }
             return pokemonView
         }

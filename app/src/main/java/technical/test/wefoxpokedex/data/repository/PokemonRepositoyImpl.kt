@@ -2,17 +2,17 @@ package technical.test.wefoxpokedex.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.runBlocking
-import retrofit2.HttpException
-import technical.test.wefoxpokedex.data.exceptions.RemoteDataNotFoundException
 import technical.test.wefoxpokedex.data.model.source.PokemonModel
 import technical.test.wefoxpokedex.data.model.view.PokemonModelView
 import technical.test.wefoxpokedex.data.network.datasource.RemoteDataSource
 import technical.test.wefoxpokedex.data.network.model.ResultData
 import technical.test.wefoxpokedex.data.persistence.datasource.PersistenceDataSource
 import technical.test.wefoxpokedex.utils.RandomUtils
-import technical.test.wefoxpokedex.utils.TimeUtils
-import technical.test.wefoxpokedex.utils.view.ConvertModelDataToModelView
-import java.lang.IllegalArgumentException
+import technical.test.wefoxpokedex.data.model.converters.ConvertModelDataToModelView
+import technical.test.wefoxpokedex.data.model.userCase.PokemonUserCaseModel
+import technical.test.wefoxpokedex.utils.constans.Constants
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PokemonRepositoyImpl(
     private val remoteDataSource: RemoteDataSource,
@@ -22,46 +22,42 @@ class PokemonRepositoyImpl(
     private val RANDOM_MIN = 1
     private val RANDOM_MAX = 1000
 
-    override val pokemonFounded: MutableLiveData<PokemonModelView> = MutableLiveData()
-    override val pokemonCatched: MutableLiveData<MutableList<PokemonModelView>> = MutableLiveData()
-    override val backpackEmpty: MutableLiveData<Boolean> = MutableLiveData()
-    override val errorDataFound: MutableLiveData<String> = MutableLiveData()
+    override val pokemonUsercase: MutableLiveData<PokemonUserCaseModel> = MutableLiveData()
 
-    private var pokemonFound: PokemonModel? = null
-    private lateinit var pokemonBackpack: List<PokemonModel>
+    override var pokemonFound: PokemonModel? = null
+    override lateinit var pokemonBackpack: List<PokemonModel>
 
     override suspend fun searchPokemon() {
-        try {
-            val pokemon = remoteDataSource.getPokemon(
-                RandomUtils.getRamdonNumer(RANDOM_MIN, RANDOM_MAX))
-            if (pokemon is ResultData.Success) {
+        val pokemon = remoteDataSource.getPokemon(
+            RandomUtils.getRamdonNumer(RANDOM_MIN, RANDOM_MAX))
+
+        when (pokemon) {
+            is ResultData.Success -> {
                 pokemonFound = pokemon.data
                 pokemonFound?.let {
-                    pokemonFounded.postValue(ConvertModelDataToModelView.dataToViewModel(it))
+                    pokemonUsercase.postValue(PokemonUserCaseModel
+                        .PokemonFounded(ConvertModelDataToModelView.dataToViewModel(it)))
                 }
             }
-        } catch (noData: RemoteDataNotFoundException) {
-            errorDataFound.postValue(noData.message)
-        } catch (e: HttpException) {
-            errorDataFound.postValue(e.message)
-        } catch (e: IllegalArgumentException) {
-            errorDataFound.postValue(e.message)
+            is ResultData.Error -> {
+                pokemonUsercase.postValue(PokemonUserCaseModel.ErrorDataFound(pokemon.exception.message!!))
+            }
         }
     }
 
     override suspend fun getBackpack() {
         pokemonBackpack = daoDataSource.getPokemonsCatched()
         if (pokemonBackpack.isNullOrEmpty()) {
-            backpackEmpty.postValue(true)
+            pokemonUsercase.postValue(PokemonUserCaseModel.BackpackEmpty(true))
         } else {
-            pokemonCatched.postValue(convertToViewModel())
+            pokemonUsercase.postValue(PokemonUserCaseModel.PokemonsCatched(convertToViewModel()))
         }
     }
 
     override fun pokemonCatched() {
         runBlocking {
             pokemonFound?.run {
-                this.dateCatched = TimeUtils.getCurrentDate()
+                this.dateCatched = Date().getCurrentDate()
                 daoDataSource.storePokemonCatched(this)
             }
         }
@@ -80,12 +76,15 @@ class PokemonRepositoyImpl(
     }
 
     private fun convertToViewModel(): MutableList<PokemonModelView> {
-      return ConvertModelDataToModelView.dataToViewModelList(sortByOrder())
+        return ConvertModelDataToModelView.dataToViewModelList(sortByOrder())
     }
 
     private fun sortByOrder(): List<PokemonModel> {
         return pokemonBackpack.sortedWith(compareBy { it.order })
     }
 
-
+    fun Date.getCurrentDate(): String {
+        val sdf = SimpleDateFormat(Constants.FORMAT_TIME, Locale.ENGLISH)
+        return sdf.format(Date())
+    }
 }
