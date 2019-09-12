@@ -1,8 +1,7 @@
 package technical.test.wefoxpokedex.utils.constans
 
-class Constants {
+object Constants {
 
-    companion object {
         /**
          * URL BASE SERVICE
          */
@@ -22,5 +21,4 @@ class Constants {
          * FORMAT TIME
          */
         const val FORMAT_TIME = "dd/M/yyyy hh:mm:ss"
-    }
 }

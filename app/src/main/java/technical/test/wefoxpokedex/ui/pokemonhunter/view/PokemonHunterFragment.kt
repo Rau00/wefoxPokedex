@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.pokemon_hunter_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.wefoxpokedex.R
+import technical.test.wefoxpokedex.data.model.userCase.PokemonUserCaseModel
 import technical.test.wefoxpokedex.data.model.view.PokemonModelView
 import technical.test.wefoxpokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModelImpl
 
@@ -37,12 +38,12 @@ class PokemonHunterFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.pokemonFounded.observe(viewLifecycleOwner, Observer { pokemon ->
-            foundedPokemon(pokemon)
-        })
-
-        viewModel.errorDataFound.observe(viewLifecycleOwner, Observer {
-            notFoundedPokemon(it)
+        viewModel.pokemonUsercase.observe(viewLifecycleOwner, Observer { pokemonUserCase ->
+            when(pokemonUserCase) {
+                is PokemonUserCaseModel.PokemonFounded -> {
+                    foundedPokemon(pokemonUserCase.pokemonFunded)}
+                is PokemonUserCaseModel.ErrorDataFound -> { notFoundedPokemon(pokemonUserCase.errorMessage)}
+            }
         })
 
         viewModel.isCatched.observe(viewLifecycleOwner, Observer {

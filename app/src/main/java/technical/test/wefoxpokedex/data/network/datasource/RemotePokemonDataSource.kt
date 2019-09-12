@@ -16,10 +16,10 @@ class RemotePokemonDataSource(private val apiInterface: ApiInterface) :
             val response = requestJob.await()
             ResultData.Success(response)
         } catch (e: HttpException) {
-            throw e
+            ResultData.Error(e)
         } catch (e: IllegalArgumentException) {
-            throw e
+            ResultData.Error(e)
         } catch (e: Throwable) {
-            throw RemoteDataNotFoundException()
+            ResultData.Error(RemoteDataNotFoundException())
         }
 }

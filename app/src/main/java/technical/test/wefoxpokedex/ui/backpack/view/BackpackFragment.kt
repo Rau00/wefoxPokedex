@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.backpack_fragment.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 import technical.test.wefoxpokedex.R
+import technical.test.wefoxpokedex.data.model.userCase.PokemonUserCaseModel
 import technical.test.wefoxpokedex.data.model.view.PokemonModelView
 import technical.test.wefoxpokedex.ui.adapters.backpack.BackpackAdapter
 import technical.test.wefoxpokedex.ui.backpack.viewmodel.BackpackViewModelImpl
@@ -37,6 +38,10 @@ class BackpackFragment : Fragment() {
         setupViewModel()
         setupObservers()
         setupListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getbackpack()
     }
 
@@ -52,12 +57,11 @@ class BackpackFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.pokemonCatched.observe(viewLifecycleOwner, Observer {
-            setupAdapter(it)
-        })
-
-        viewModel.backpackEmpty.observe(viewLifecycleOwner, Observer {
-            showDialogBackpackEmpty()
+        viewModel.pokemonUsercase.observe(viewLifecycleOwner, Observer { pokemonUserCase ->
+            when(pokemonUserCase) {
+                is PokemonUserCaseModel.PokemonsCatched -> {setupAdapter(pokemonUserCase.pokemonsCatched)}
+                is PokemonUserCaseModel.BackpackEmpty -> {showDialogBackpackEmpty() }
+            }
         })
     }
 
