@@ -21,15 +21,14 @@ class PokemonHunterViewModelImpl(private val repository: PokemonRepository) :
     override val isCatched: LiveData<Int> = catched
 
     override fun searchPokemon() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.searchPokemon()
         }
     }
 
     override fun catchPokemon() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val job = async {repository.pokemonCatched()}
-            job.await()
+        viewModelScope.launch {
+            repository.pokemonCatched()
             repository.getBackpack()
             repository.searchPokemon()
         }
