@@ -30,16 +30,20 @@ class PokemonRepositoyImpl(
 
     override suspend fun searchPokemon() {
         val pokemon = remoteDataSource.getPokemon(
-            RandomUtils.getRamdonNumer(RANDOM_MIN, RANDOM_MAX))
+            RandomUtils.getRamdonNumer(RANDOM_MIN, RANDOM_MAX)
+        )
 
         when (pokemon) {
             is ResultData.Success -> {
                 pokemonFound = pokemon.data.toModel()
                 pokemonFound?.let {
-                    pokemonUsercase.postValue(PokemonUserCaseModel
-                        .PokemonFounded(ConvertModelDataToModelView.dataToViewModel(it)))
+                    pokemonUsercase.postValue(
+                        PokemonUserCaseModel
+                            .PokemonFounded(ConvertModelDataToModelView.dataToViewModel(it))
+                    )
                 }
             }
+
             is ResultData.Error -> {
                 pokemonUsercase.postValue(PokemonUserCaseModel.ErrorDataFound(pokemon.exception.message!!))
             }
@@ -47,40 +51,42 @@ class PokemonRepositoyImpl(
     }
 
     override suspend fun getBackpack() {
-        pokemonBackpack = daoDataSource.getPokemonsCatched()
-        if (pokemonBackpack.isNullOrEmpty()) {
-            pokemonUsercase.postValue(PokemonUserCaseModel.BackpackEmpty(true))
-        } else {
-            pokemonUsercase.postValue(PokemonUserCaseModel.PokemonsCatched(convertToViewModel()))
-        }
-    }
-
-    override fun pokemonCatched() {
-        runBlocking {
-            pokemonFound?.run {
-                this.dateCatched = Date().getCurrentDate()
-                daoDataSource.storePokemonCatched(this)
+       daoDataSource.getPokemonsCatched()
+            .onSuccess {
+                pokemonBackpack = it
+                if (it.isNullOrEmpty()) {
+                    pokemonUsercase.postValue(PokemonUserCaseModel.BackpackEmpty(true))
+                } else {
+                    pokemonUsercase.postValue(PokemonUserCaseModel.PokemonsCatched(convertToViewModel(it)))
+                }
             }
+
+    }
+
+    override suspend fun pokemonCatched() {
+        pokemonFound?.run {
+            this.dateCatched = Date().getCurrentDate()
+            daoDataSource.storePokemonCatched(this)
         }
     }
 
-    override fun setFreePokemon(id: Int) {
+    override suspend fun setFreePokemon(id: Int) {
         runBlocking {
             daoDataSource.setFreePokemonCatched(id)
         }
     }
 
-    override fun setFreeAllPokemon() {
+    override suspend fun setFreeAllPokemon() {
         runBlocking {
             daoDataSource.setFreeAllPokemon()
         }
     }
 
-    private fun convertToViewModel(): MutableList<PokemonModelView> {
-        return ConvertModelDataToModelView.dataToViewModelList(sortByOrder())
+    private fun convertToViewModel(pokemonBackpack: List<PokemonModel>): MutableList<PokemonModelView> {
+        return ConvertModelDataToModelView.dataToViewModelList(sortByOrder(pokemonBackpack))
     }
 
-    private fun sortByOrder(): List<PokemonModel> {
+    private fun sortByOrder(pokemonBackpack: List<PokemonModel>): List<PokemonModel> {
         return pokemonBackpack.sortedWith(compareBy { it.order })
     }
 

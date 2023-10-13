@@ -5,8 +5,8 @@ import technical.test.pokedex.data.persistence.database.PokemonDao
 
 class PersistencePokemonDataSource(private val pokemonDao: PokemonDao): PersistenceDataSource {
 
-    override suspend fun getPokemonsCatched(): List<PokemonModel> =
-        pokemonDao.getAllPokemon()
+    override suspend fun getPokemonsCatched(): Result<List<PokemonModel>> =
+        Result.success(pokemonDao.getAllPokemon())
 
     override suspend fun storePokemonCatched(pokemon: PokemonModel) {
         pokemonDao.insertPokemon(pokemon = pokemon)

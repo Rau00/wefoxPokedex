@@ -10,7 +10,7 @@ import technical.test.pokedex.utils.constans.Constants
 interface PokemonDao {
 
     @Query("SELECT * from ${Constants.PERSISTENCE_TABLE}")
-    fun getAllPokemon(): List<PokemonModel>
+    suspend fun getAllPokemon(): List<PokemonModel>
 
     @Insert
     suspend fun insertPokemon(pokemon: PokemonModel)

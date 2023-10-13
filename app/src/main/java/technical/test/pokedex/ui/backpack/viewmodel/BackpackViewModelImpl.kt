@@ -24,7 +24,7 @@ class BackpackViewModelImpl(private val repository: PokemonRepository) : ViewMod
     }
 
     override fun getbackpack() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.getBackpack()
         }
     }

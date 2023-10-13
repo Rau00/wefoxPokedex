@@ -9,10 +9,9 @@ interface PokemonRepository {
 
     var pokemonFound: PokemonModel?
     var pokemonBackpack: List<PokemonModel>
-
     suspend fun searchPokemon()
     suspend fun getBackpack()
-    fun pokemonCatched()
-    fun setFreePokemon(id: Int)
-    fun setFreeAllPokemon()
+    suspend fun pokemonCatched()
+    suspend fun setFreePokemon(id: Int)
+    suspend fun setFreeAllPokemon()
 }
