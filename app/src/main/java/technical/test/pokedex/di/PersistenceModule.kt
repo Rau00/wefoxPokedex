@@ -1,8 +1,8 @@
 package technical.test.pokedex.di
 
 import org.koin.dsl.module
-import technical.test.pokedex.data.persistence.database.PokemonDataBase
+import technical.test.pokedex.data.datasources.local.database.PokemonDDBB
 
 val persistenceModule = module {
-    single { PokemonDataBase.getDatabase(get()).getPokemonDao() }
+    single { PokemonDDBB.getDatabase(get()).getPokemonDao() }
 }

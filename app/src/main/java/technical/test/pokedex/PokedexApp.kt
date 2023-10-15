@@ -21,7 +21,7 @@ class PokedexApp: Application() {
             // declare modules
             modules(listOf(
                 dataSourceModule, persistenceModule, repositoryModule,
-                viewModelModule, networkModule))
+                viewModelModule, useCasesModule, networkModule))
         }
     }
 }

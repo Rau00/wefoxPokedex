@@ -1,4 +1,4 @@
-# wefoxPokedex
+# Pokedex
 
 Architecture MVVM + Router
 
