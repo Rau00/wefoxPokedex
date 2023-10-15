@@ -2,31 +2,30 @@ package technical.test.pokedex.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.runBlocking
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.view.PokemonModelView
-import technical.test.pokedex.data.network.datasource.RemoteDataSource
-import technical.test.pokedex.data.network.model.ResultData
-import technical.test.pokedex.data.persistence.datasource.PersistenceDataSource
+import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.data.datasources.remote.RemoteDataSource
+import technical.test.pokedex.data.datasources.remote.network.model.ResultData
+import technical.test.pokedex.domain.PokemonUserCaseModel
+import technical.test.pokedex.domain.models.PokemonModel
+import technical.test.pokedex.domain.models.mapper.toModel
 import technical.test.pokedex.utils.RandomUtils
-import technical.test.pokedex.data.model.converters.ConvertModelDataToModelView
-import technical.test.pokedex.data.model.source.mapper.toModel
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
 import technical.test.pokedex.utils.constans.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PokemonRepositoyImpl(
     private val remoteDataSource: RemoteDataSource,
-    private val daoDataSource: PersistenceDataSource
+    private val daoDataSource: PokemonLocalDataSource
 ) : PokemonRepository {
 
     private val RANDOM_MIN = 1
     private val RANDOM_MAX = 1000
 
-    override val pokemonUsercase: MutableLiveData<PokemonUserCaseModel> = MutableLiveData()
+    override val pokemonUsercase: MutableLiveData<PokemonModel> = MutableLiveData()
 
-    override var pokemonFound: PokemonModel? = null
-    override lateinit var pokemonBackpack: List<PokemonModel>
+    override var pokemonFound: PokemonEntity? = null
+    override lateinit var pokemonBackpack: List<PokemonEntity>
 
     override suspend fun searchPokemon() {
         val pokemon = remoteDataSource.getPokemon(
@@ -65,7 +64,7 @@ class PokemonRepositoyImpl(
 
     override suspend fun pokemonCatched() {
         pokemonFound?.run {
-            this.dateCatched = Date().getCurrentDate()
+            this.dateCaught = Date().getCurrentDate()
             daoDataSource.storePokemonCatched(this)
         }
     }
@@ -82,11 +81,11 @@ class PokemonRepositoyImpl(
         }
     }
 
-    private fun convertToViewModel(pokemonBackpack: List<PokemonModel>): MutableList<PokemonModelView> {
+    private fun convertToViewModel(pokemonBackpack: List<PokemonEntity>): MutableList<PokemonModelView> {
         return ConvertModelDataToModelView.dataToViewModelList(sortByOrder(pokemonBackpack))
     }
 
-    private fun sortByOrder(pokemonBackpack: List<PokemonModel>): List<PokemonModel> {
+    private fun sortByOrder(pokemonBackpack: List<PokemonEntity>): List<PokemonEntity> {
         return pokemonBackpack.sortedWith(compareBy { it.order })
     }
 

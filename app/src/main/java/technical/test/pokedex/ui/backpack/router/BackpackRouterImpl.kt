@@ -2,7 +2,7 @@ package technical.test.pokedex.ui.backpack.router
 
 import android.app.Activity
 import android.content.Intent
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 import technical.test.pokedex.ui.pokemondetail.view.PokemonDetailActivity
 import technical.test.pokedex.ui.pokemonhunter.view.PokemonHunterActivity
 import technical.test.pokedex.utils.constans.Constants

@@ -1,9 +1,7 @@
 package technical.test.pokedex.ui.pokemonhunter.viewmodel
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.Dispatchers
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
-import kotlin.coroutines.CoroutineContext
+import technical.test.pokedex.domain.PokemonUserCaseModel
 
 interface PokemonHunterViewModel {
 

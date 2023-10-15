@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 import technical.test.pokedex.databinding.PokemonDetailFragmentBinding
 import technical.test.pokedex.ui.pokemondetail.viewmodel.PokemonDetailViewModelImpl
 import technical.test.pokedex.utils.constans.Constants

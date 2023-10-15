@@ -1,7 +1,7 @@
 package technical.test.pokedex.ui.pokemondetail.viewmodel
 
 import androidx.lifecycle.LiveData
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 
 interface PokemonDetailViewModel {
 

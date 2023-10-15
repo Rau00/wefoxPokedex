@@ -1,6 +1,6 @@
 package technical.test.pokedex.ui.backpack.router
 
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 
 interface BackpackRouter {
 

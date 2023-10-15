@@ -5,13 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.domain.PokemonUserCaseModel
 import technical.test.pokedex.data.repository.PokemonRepository
-import kotlin.coroutines.CoroutineContext
 
 class PokemonHunterViewModelImpl(private val repository: PokemonRepository) :
     ViewModel(), PokemonHunterViewModel {
@@ -43,8 +40,8 @@ class PokemonHunterViewModelImpl(private val repository: PokemonRepository) :
     }
 
     private fun isCatched(
-        pokemonList: List<PokemonModel>,
-        pokemonFound: PokemonModel
+        pokemonList: List<PokemonEntity>,
+        pokemonFound: PokemonEntity
     ) {
         for (pokemon in pokemonList) {
             if (pokemon.name == pokemonFound.name) {

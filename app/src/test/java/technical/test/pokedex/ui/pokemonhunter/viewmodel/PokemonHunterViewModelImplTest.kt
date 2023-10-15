@@ -10,13 +10,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import technical.test.pokedex.CoroutinesTestRule
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.source.PokemonSprites
-import technical.test.pokedex.data.model.source.PokemonType
-import technical.test.pokedex.data.model.source.PokemonTypeName
-import technical.test.pokedex.data.network.datasource.RemoteDataSource
-import technical.test.pokedex.data.network.model.ResultData
-import technical.test.pokedex.data.persistence.datasource.PersistenceDataSource
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.domain.PokemonSprites
+import technical.test.pokedex.domain.PokemonType
+import technical.test.pokedex.domain.PokemonTypeName
+import technical.test.pokedex.data.datasources.remote.RemoteDataSource
+import technical.test.pokedex.data.datasources.remote.network.model.ResultData
+import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.repository.PokemonRepository
 import technical.test.pokedex.data.repository.PokemonRepositoyImpl
 
@@ -34,12 +34,12 @@ class PokemonHunterViewModelImplTest {
     //Collaborators
     lateinit var repository: PokemonRepository
     lateinit var repositoryMocked: PokemonRepository
-    lateinit var daoDataSource: PersistenceDataSource
+    lateinit var daoDataSource: PokemonLocalDataSource
     lateinit var remoteDataSource: RemoteDataSource
 
     //Utilities
-    lateinit var daoPokemon: PokemonModel
-    lateinit var remotePokemon: PokemonModel
+    lateinit var daoPokemon: PokemonEntity
+    lateinit var remotePokemon: PokemonEntity
     lateinit var type: List<PokemonType>
 
     @Before
@@ -48,19 +48,19 @@ class PokemonHunterViewModelImplTest {
             daoDataSource = mock()
             remoteDataSource = mock()
             type = listOf(PokemonType(PokemonTypeName("planta")))
-            daoPokemon = PokemonModel(
+            daoPokemon = PokemonEntity(
                 1, "bulbasur",
                 2, 3, 4, PokemonSprites("urlImageDAO"),
                 "lunes", 5, type
             )
 
-            remotePokemon = PokemonModel(
+            remotePokemon = PokemonEntity(
                 1, "bulbasur",
                 2, 3, 4, PokemonSprites("urlImageDAO"),
                 "lunes", 5, type
             )
 
-            val pokemonList = mutableListOf<PokemonModel>()
+            val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
             whenever(daoDataSource.getPokemonsCatched()).thenReturn(pokemonList)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
@@ -107,7 +107,7 @@ class PokemonHunterViewModelImplTest {
     @Test
     fun `check pokemon is not catched`() {
         runBlocking {
-            remotePokemon = PokemonModel(1, "pikachu", 2,
+            remotePokemon = PokemonEntity(1, "pikachu", 2,
                 3, 4, PokemonSprites("urlImageDAO"),
                 "lunes", 5, type)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))

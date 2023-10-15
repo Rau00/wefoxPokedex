@@ -5,7 +5,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Rule
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 
 class PokemonDetailViewModelImplTest {
 

@@ -1,14 +1,14 @@
 package technical.test.pokedex.data.repository
 
 import androidx.lifecycle.LiveData
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.domain.PokemonUserCaseModel
 
 interface PokemonRepository {
     val pokemonUsercase: LiveData<PokemonUserCaseModel>
 
-    var pokemonFound: PokemonModel?
-    var pokemonBackpack: List<PokemonModel>
+    var pokemonFound: PokemonEntity?
+    var pokemonBackpack: List<PokemonEntity>
     suspend fun searchPokemon()
     suspend fun getBackpack()
     suspend fun pokemonCatched()

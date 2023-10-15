@@ -4,14 +4,12 @@ import android.app.Activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.domain.PokemonUserCaseModel
+import technical.test.pokedex.data.models.view.PokemonModelView
 import technical.test.pokedex.data.repository.PokemonRepository
 import technical.test.pokedex.ui.backpack.router.BackpackRouter
 import technical.test.pokedex.ui.backpack.router.BackpackRouterImpl
-import kotlin.coroutines.CoroutineContext
 
 class BackpackViewModelImpl(private val repository: PokemonRepository) : ViewModel(), BackpackViewModel {
 

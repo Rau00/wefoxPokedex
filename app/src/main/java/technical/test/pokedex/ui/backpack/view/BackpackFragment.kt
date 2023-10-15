@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.data.model.userCase.PokemonUserCaseModel
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.domain.PokemonUserCaseModel
+import technical.test.pokedex.data.models.view.PokemonModelView
 import technical.test.pokedex.databinding.BackpackFragmentBinding
 import technical.test.pokedex.ui.adapters.backpack.BackpackAdapter
 import technical.test.pokedex.ui.backpack.viewmodel.BackpackViewModelImpl

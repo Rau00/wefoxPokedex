@@ -1,11 +1,9 @@
 package technical.test.pokedex.ui.adapters.backpack
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import technical.test.pokedex.R
-import technical.test.pokedex.data.model.view.PokemonModelView
+import technical.test.pokedex.data.models.view.PokemonModelView
 import technical.test.pokedex.databinding.ItemBackpackPokemonBinding
 
 class BackpackAdapter(private val backpackList: List<PokemonModelView>, private val action: (PokemonModelView) -> Unit):

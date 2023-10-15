@@ -1,22 +1,26 @@
 package technical.test.pokedex.data.network.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.*
-import kotlinx.coroutines.CompletableDeferred
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import retrofit2.HttpException
-import technical.test.pokedex.data.network.interfaces.ApiInterface
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.source.PokemonSprites
-import technical.test.pokedex.data.network.model.ResultData
 import technical.test.pokedex.CoroutinesTestRule
-import technical.test.pokedex.data.model.source.PokemonType
-import technical.test.pokedex.data.model.source.PokemonTypeName
+import technical.test.pokedex.data.datasources.remote.RemoteDataSource
+import technical.test.pokedex.data.datasources.remote.RemotePokemonDataSource
+import technical.test.pokedex.data.datasources.remote.network.interfaces.ApiInterface
+import technical.test.pokedex.data.datasources.remote.network.model.ResultData
+import technical.test.pokedex.data.datasources.remote.responses.PokemonResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonSpritesResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeNameResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeResponse
 
 
 class RemoteDataSourceTest {
@@ -34,17 +38,17 @@ class RemoteDataSourceTest {
     lateinit var service: ApiInterface
 
     //Utilities
-    lateinit var pokemonDefined: PokemonModel
+    lateinit var pokemonDefined: PokemonResponse
 
     @Before
     fun setUp() {
         runBlocking {
             service = mock()
-            val type = listOf(PokemonType(PokemonTypeName("planta")))
+            val type = listOf(PokemonTypeResponse(PokemonTypeNameResponse("planta")))
             pokemonDefined =
-                PokemonModel(0, "pikachu", 7, 40, 12,
-                    PokemonSprites("urlImage"), "martes", 5, type)
-            whenever(service.fetchPokemon(any())).thenReturn(CompletableDeferred(pokemonDefined))
+                PokemonResponse(0, "pikachu", 7, 40, 12,
+                    PokemonSpritesResponse("urlImage"),5, type)
+            whenever(service.fetchPokemon(any())).thenReturn(pokemonDefined)
             dataSource = RemotePokemonDataSource(service)
         }
     }

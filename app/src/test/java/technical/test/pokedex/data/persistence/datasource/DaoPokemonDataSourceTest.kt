@@ -10,11 +10,13 @@ import org.junit.Before
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import technical.test.pokedex.data.model.source.PokemonModel
-import technical.test.pokedex.data.model.source.PokemonSprites
-import technical.test.pokedex.data.model.source.PokemonType
-import technical.test.pokedex.data.model.source.PokemonTypeName
-import technical.test.pokedex.data.persistence.database.PokemonDao
+import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
+import technical.test.pokedex.data.datasources.local.PokemonLocalDataSourceImpl
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.domain.PokemonSprites
+import technical.test.pokedex.domain.PokemonType
+import technical.test.pokedex.domain.PokemonTypeName
+import technical.test.pokedex.data.datasources.local.database.PokemonDao
 
 class DaoPokemonDataSourceTest {
 
@@ -22,13 +24,13 @@ class DaoPokemonDataSourceTest {
     val rule = InstantTaskExecutorRule()
 
     //Target test
-    lateinit var dataSource: PersistenceDataSource
+    lateinit var dataSource: PokemonLocalDataSource
 
     //Collaborators
     lateinit var dao: PokemonDao
 
     //Utilities
-    lateinit var daoPokemon: PokemonModel
+    lateinit var daoPokemon: PokemonEntity
 
     @Before
     fun setUp() {
@@ -36,12 +38,12 @@ class DaoPokemonDataSourceTest {
             dao = mock()
             val type = listOf(PokemonType(PokemonTypeName("planta")))
             daoPokemon =
-                PokemonModel(0, "pikachu", 7, 40, 12,
+                PokemonEntity(0, "pikachu", 7, 40, 12,
                     PokemonSprites("urlImage"), "lunes", 4, type)
-            val pokemonList = mutableListOf<PokemonModel>()
+            val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
             whenever(dao.getAllPokemon()).thenReturn(pokemonList)
-            dataSource = PersistencePokemonDataSource(dao)
+            dataSource = PokemonLocalDataSourceImpl(dao)
         }
     }
 
