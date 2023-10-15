@@ -65,11 +65,11 @@ class PokemonHunterViewModelImplTest {
             whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
             repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
-            viewModel = PokemonHunterViewModelImpl(repository)
+            viewModel = PokemonHunterViewModel(repository)
 
             //Mocked classes
             repositoryMocked = mock()
-            viewModelMocked = PokemonHunterViewModelImpl(repositoryMocked)
+            viewModelMocked = PokemonHunterViewModel(repositoryMocked)
         }
     }
 

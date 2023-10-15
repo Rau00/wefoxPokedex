@@ -5,14 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.domain.PokemonUserCaseModel
-import technical.test.pokedex.data.models.view.PokemonModelView
+import technical.test.pokedex.ui.PokemonViewStates
+import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.databinding.PokemonHunterFragmentBinding
-import technical.test.pokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModelImpl
+import technical.test.pokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModel
 
 class PokemonHunterFragment : Fragment() {
 
@@ -20,7 +24,7 @@ class PokemonHunterFragment : Fragment() {
         fun newInstance() = PokemonHunterFragment()
     }
 
-    private lateinit var viewModel: PokemonHunterViewModelImpl
+    private lateinit var viewModel: PokemonHunterViewModel
     private lateinit var binding: PokemonHunterFragmentBinding
 
     override fun onCreateView(
@@ -31,27 +35,49 @@ class PokemonHunterFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = getViewModel()
-        setupObservers()
         setupListeners()
-        searchPokemon()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                setupObservers()
+            }
+        }
     }
 
-    private fun setupObservers() {
-        viewModel.pokemonUsercase.observe(viewLifecycleOwner, Observer { pokemonUserCase ->
-            when(pokemonUserCase) {
-                is PokemonUserCaseModel.PokemonFounded -> {
-                    foundedPokemon(pokemonUserCase.pokemonFunded)}
-                is PokemonUserCaseModel.ErrorDataFound -> { notFoundedPokemon(pokemonUserCase.errorMessage)}
+    private suspend fun setupObservers() {
+        viewModel.pokemonFound.collect { pokemonFountResult ->
+            when (pokemonFountResult) {
+                PokemonViewStates.Idle -> {
+                    searchPokemon()
+                }
+                PokemonViewStates.Loading -> {
+                    showLoading()
+                }
+                is PokemonViewStates.PokemonFounded -> {
+                    hideLoading()
+                    enableButtons()
+                    foundedPokemon(pokemonFountResult.pokemonFunded)
+                }
+
+                is PokemonViewStates.ErrorDataFound -> {
+                    hideLoading()
+                    enableButtons()
+                    notFoundedPokemon(pokemonFountResult.errorMessage)
+                }
+
                 else -> {}
             }
-        })
+        }
 
-        viewModel.isCaught.observe(viewLifecycleOwner, Observer {
-            binding.btCatch.visibility = it
-        })
+        viewModel.isPokemonCaught.collect { isCaught ->
+            if (isCaught) {
+                binding.btCatch.visibility = View.GONE
+            } else {
+                binding.btCatch.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun setupListeners() {
@@ -71,7 +97,7 @@ class PokemonHunterFragment : Fragment() {
         }
     }
 
-    private fun render(pokemon: PokemonModelView) {
+    private fun render(pokemon: PokemonModel) {
         binding.apply {
             tvName.text = pokemon.name
             tvWeight.text = resources.getString(R.string.hunt_weight) + pokemon.weight
@@ -142,12 +168,11 @@ class PokemonHunterFragment : Fragment() {
     }
 
     private fun searchPokemon() {
-        showLoading()
         disableButtons()
         viewModel.searchPokemon()
     }
 
-    private fun foundedPokemon(pokemon: PokemonModelView) {
+    private fun foundedPokemon(pokemon: PokemonModel) {
         enableButtons()
         changeToCatchLeaveButtons()
         hideError()
@@ -170,7 +195,8 @@ class PokemonHunterFragment : Fragment() {
         showLoading()
         viewModel.catchPokemon()
         binding.ivpokemonFounded.setImageDrawable(
-            resources.getDrawable(R.drawable.pokeball2))
+            resources.getDrawable(R.drawable.pokeball2)
+        )
     }
 
 }
