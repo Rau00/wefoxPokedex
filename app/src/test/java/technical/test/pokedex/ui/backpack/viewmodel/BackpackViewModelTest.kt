@@ -18,7 +18,7 @@ import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.repository.PokemonRepository
 import technical.test.pokedex.data.repository.PokemonRepositoryImpl
 
-class BackpackViewModelImplTest {
+class BackpackViewModelTest {
 
 
     @get:Rule
@@ -52,7 +52,7 @@ class BackpackViewModelImplTest {
             pokemonList.add(daoPokemon)
             whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
             repository = PokemonRepositoryImpl(mock(), daoDataSource)
-            viewModel = BackpackViewModelImpl(repository)
+            viewModel = BackpackViewModel(repository)
         }
     }
 

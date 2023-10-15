@@ -1,9 +1,9 @@
 package technical.test.pokedex.ui.backpack.router
 
-import technical.test.pokedex.data.models.view.PokemonModelView
+import technical.test.pokedex.domain.models.PokemonModel
 
 interface BackpackRouter {
 
     fun goHunting()
-    fun seePokemonDetail(pokemon: PokemonModelView)
+    fun seePokemonDetail(pokemon: PokemonModel)
 }

@@ -1,10 +1,13 @@
 package technical.test.pokedex.ui
 
-import technical.test.pokedex.data.models.view.PokemonModelView
+import technical.test.pokedex.domain.models.PokemonModel
 
 sealed class PokemonViewStates {
-    data class PokemonFounded(val pokemonFunded: PokemonModelView): PokemonViewStates()
-    data class PokemonsCaught(val pokemonsCaught: MutableList<PokemonModelView>): PokemonViewStates()
-    data class BackpackEmpty(val isEmpty: Boolean): PokemonViewStates()
+
+    data object Idle: PokemonViewStates()
+    data object Loading: PokemonViewStates()
+    data class PokemonFounded(val pokemonFunded: PokemonModel): PokemonViewStates()
+    data class PokemonCaughtList(val pokemonCaughtList: List<PokemonModel>): PokemonViewStates()
+    data object BackpackEmpty: PokemonViewStates()
     data class ErrorDataFound(val errorMessage: String): PokemonViewStates()
 }

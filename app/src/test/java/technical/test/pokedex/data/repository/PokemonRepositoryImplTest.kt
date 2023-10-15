@@ -93,11 +93,11 @@ class PokemonRepositoryImplTest {
 
     @Test
     fun `remove all pokemon execution OK`(){
-        repository.setFreeAllPokemon()
+        repository.freeAllPokemon()
     }
 
     @Test
     fun `remove any pokemon execution OK`(){
-        repository.setFreePokemon(any())
+        repository.freePokemon(any())
     }
 }

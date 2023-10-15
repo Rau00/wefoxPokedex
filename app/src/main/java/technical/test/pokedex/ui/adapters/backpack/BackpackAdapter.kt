@@ -3,10 +3,10 @@ package technical.test.pokedex.ui.adapters.backpack
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import technical.test.pokedex.data.models.view.PokemonModelView
+import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.databinding.ItemBackpackPokemonBinding
 
-class BackpackAdapter(private val backpackList: List<PokemonModelView>, private val action: (PokemonModelView) -> Unit):
+class BackpackAdapter(private val backpackList: List<PokemonModel>, private val action: (PokemonModel) -> Unit):
     RecyclerView.Adapter<BackpackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BackpackViewHolder =
