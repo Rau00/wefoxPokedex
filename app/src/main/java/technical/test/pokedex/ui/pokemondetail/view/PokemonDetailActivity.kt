@@ -11,7 +11,7 @@ class PokemonDetailActivity : AppCompatActivity() {
         setContentView(R.layout.pokemon_detail_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, PokemonDetailFragment.newInstance())
+                .replace(R.id.container, PokemonDetailFragment())
                 .commitNow()
         }
     }

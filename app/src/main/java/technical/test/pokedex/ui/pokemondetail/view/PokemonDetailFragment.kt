@@ -6,22 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.data.models.view.PokemonModelView
+import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.databinding.PokemonDetailFragmentBinding
-import technical.test.pokedex.ui.pokemondetail.viewmodel.PokemonDetailViewModelImpl
+import technical.test.pokedex.ui.pokemondetail.viewmodel.PokemonDetailViewModel
 import technical.test.pokedex.utils.constans.Constants
 
 class PokemonDetailFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = PokemonDetailFragment()
-    }
-
-    private lateinit var viewModel: PokemonDetailViewModelImpl
+    private lateinit var viewModel: PokemonDetailViewModel
     private lateinit var binding: PokemonDetailFragmentBinding
 
     override fun onCreateView(
@@ -32,28 +31,36 @@ class PokemonDetailFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = getViewModel()
         getPokemon()
-        setuoObservers()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                setupObservers()
+            }
+        }
     }
 
     private fun getPokemon() {
-        activity?.intent?.extras?.let {extras ->
+        activity?.intent?.extras?.let { extras ->
             if (extras.containsKey(Constants.POKEMON_DETAIL)) {
-                extras.getParcelable<PokemonModelView>(Constants.POKEMON_DETAIL)?.let { it ->
+                extras.getParcelable<PokemonModel>(Constants.POKEMON_DETAIL)?.let { it ->
                     viewModel.setupPokemonDetail(it)
                 }
             }
         }
     }
 
-    private fun setuoObservers() {
-        viewModel.pokemon.observe(viewLifecycleOwner, Observer { render(it) })
+    private suspend fun setupObservers() {
+        viewModel.pokemon.collect {
+            it?.let { pokemon ->
+                render(pokemon)
+            }
+        }
     }
 
-    private fun render(pokemon: PokemonModelView) {
+    private fun render(pokemon: PokemonModel) {
         binding.apply {
             tvName.text = pokemon.name
             tvWeight.text = resources.getString(R.string.detail_weight) + pokemon.weight
