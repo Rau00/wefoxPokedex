@@ -50,7 +50,7 @@ class BackpackViewModelImplTest {
             )
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCatched()).thenReturn(pokemonList)
+            whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
             repository = PokemonRepositoyImpl(mock(), daoDataSource)
             viewModel = BackpackViewModelImpl(repository)
         }
@@ -59,6 +59,6 @@ class BackpackViewModelImplTest {
     @Test
     fun `get Backpack OK`() {
         viewModel.getbackpack(Dispatchers.Main)
-        assertEquals(daoPokemon.name, viewModel.pokemonCatched.value!![0].name)
+        assertEquals(daoPokemon.name, viewModel.pokemonCaught.value!![0].name)
     }
 }

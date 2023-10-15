@@ -51,7 +51,7 @@
             app:layout_constraintHorizontal_bias="0.9"/>
 
     <TextView
-            android:id="@+id/tvCatchedTo"
+            android:id="@+id/tvCaughtTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"

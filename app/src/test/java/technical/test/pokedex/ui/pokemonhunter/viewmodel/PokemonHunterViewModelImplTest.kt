@@ -62,7 +62,7 @@ class PokemonHunterViewModelImplTest {
 
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCatched()).thenReturn(pokemonList)
+            whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
             repository = PokemonRepositoyImpl(remoteDataSource, daoDataSource)
             viewModel = PokemonHunterViewModelImpl(repository)
@@ -91,7 +91,7 @@ class PokemonHunterViewModelImplTest {
     fun `catch pokemon pokemon call respository OK`() {
         runBlocking {
             viewModelMocked.catchPokemon(Dispatchers.Main)
-            verify(repositoryMocked, times(1)).pokemonCatched()
+            verify(repositoryMocked, times(1)).pokemonCaught()
             verify(repositoryMocked, times(1)).getBackpack()
             verify(repositoryMocked, times(1)).searchPokemon()
         }
@@ -100,8 +100,8 @@ class PokemonHunterViewModelImplTest {
     @Test
     fun `check pokemon is catched`() {
         viewModel.catchPokemon(Dispatchers.Main)
-        viewModel.checkPokemonCatched()
-        assertTrue(viewModel.isCatched.value == View.GONE)
+        viewModel.checkPokemonCaught()
+        assertTrue(viewModel.isCaught.value == View.GONE)
     }
 
     @Test
@@ -112,8 +112,8 @@ class PokemonHunterViewModelImplTest {
                 "lunes", 5, type)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
             viewModel.catchPokemon(Dispatchers.Main)
-            viewModel.checkPokemonCatched()
-            assertTrue(viewModel.isCatched.value == View.VISIBLE)
+            viewModel.checkPokemonCaught()
+            assertTrue(viewModel.isCaught.value == View.VISIBLE)
         }
 
     }

@@ -6,9 +6,9 @@ import technical.test.pokedex.domain.PokemonUserCaseModel
 interface PokemonHunterViewModel {
 
     val pokemonUsercase: LiveData<PokemonUserCaseModel>
-    val isCatched: LiveData<Int>
+    val isCaught: LiveData<Int>
 
     fun searchPokemon()
     fun catchPokemon()
-    fun checkPokemonCatched()
+    fun checkPokemonCaught()
 }

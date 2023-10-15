@@ -58,7 +58,7 @@ class PokemonDetailFragment : Fragment() {
             tvName.text = pokemon.name
             tvWeight.text = resources.getString(R.string.detail_weight) + pokemon.weight
             tvHeight.text = resources.getString(R.string.detail_height) + pokemon.height
-            tvCatchedTo.text = resources.getString(R.string.detail_catched) + pokemon.dateCatched
+            tvCaughtTo.text = resources.getString(R.string.detail_catched) + pokemon.dateCaught
             tvExperience.text =
                 resources.getString(R.string.detail_experience) + pokemon.baseExperience
             addTypesView(pokemon.types)

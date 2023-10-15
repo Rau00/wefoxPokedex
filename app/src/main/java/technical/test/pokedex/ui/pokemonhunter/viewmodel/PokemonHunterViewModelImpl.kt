@@ -15,7 +15,7 @@ class PokemonHunterViewModelImpl(private val repository: PokemonRepository) :
 
     override val pokemonUsercase: LiveData<PokemonUserCaseModel> = repository.pokemonUsercase
     private val catched = MutableLiveData<Int>()
-    override val isCatched: LiveData<Int> = catched
+    override val isCaught: LiveData<Int> = catched
 
     override fun searchPokemon() {
         viewModelScope.launch {
@@ -25,21 +25,21 @@ class PokemonHunterViewModelImpl(private val repository: PokemonRepository) :
 
     override fun catchPokemon() {
         viewModelScope.launch {
-            repository.pokemonCatched()
+            repository.pokemonCaught()
             repository.getBackpack()
             repository.searchPokemon()
         }
     }
 
-    override fun checkPokemonCatched() {
+    override fun checkPokemonCaught() {
         repository.pokemonBackpack?.let { pokemonList ->
             repository.pokemonFound?.let { pokemonFound ->
-                isCatched(pokemonList, pokemonFound)
+                isCaught(pokemonList, pokemonFound)
             }
         }
     }
 
-    private fun isCatched(
+    private fun isCaught(
         pokemonList: List<PokemonEntity>,
         pokemonFound: PokemonEntity
     ) {

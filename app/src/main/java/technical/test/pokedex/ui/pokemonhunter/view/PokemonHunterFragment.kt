@@ -49,7 +49,7 @@ class PokemonHunterFragment : Fragment() {
             }
         })
 
-        viewModel.isCatched.observe(viewLifecycleOwner, Observer {
+        viewModel.isCaught.observe(viewLifecycleOwner, Observer {
             binding.btCatch.visibility = it
         })
     }
@@ -153,7 +153,7 @@ class PokemonHunterFragment : Fragment() {
         hideError()
         hideLoading()
         render(pokemon)
-        viewModel.checkPokemonCatched()
+        viewModel.checkPokemonCaught()
         showPokemonInfo()
     }
 

@@ -3,9 +3,9 @@ package technical.test.pokedex.data.datasources.local
 import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
 
 interface PokemonLocalDataSource {
-    suspend fun getPokemonsCatched(): Result<List<PokemonEntity>>
-    suspend fun storePokemonCatched(pokemon: PokemonEntity)
-    suspend fun setFreePokemonCatched(pokemonId: Int)
+    suspend fun getPokemonsCaught(): Result<List<PokemonEntity>>
+    suspend fun storePokemonCaught(pokemon: PokemonEntity)
+    suspend fun setFreePokemonCaught(pokemonId: Int)
     suspend fun setFreeAllPokemon()
 
 }

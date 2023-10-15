@@ -50,7 +50,7 @@ class DaoPokemonDataSourceTest {
     @Test
     fun `get all pokemon in dao execute ok`() {
         runBlocking {
-            val pokemonList = dataSource.getPokemonsCatched()
+            val pokemonList = dataSource.getPokemonsCaught()
             assertEquals(daoPokemon.name, pokemonList[0].name)
         }
     }
@@ -58,7 +58,7 @@ class DaoPokemonDataSourceTest {
     @Test
     fun `insert pokemon in dao execute ok`() {
         runBlocking {
-            dataSource.storePokemonCatched(daoPokemon)
+            dataSource.storePokemonCaught(daoPokemon)
         }
     }
 
@@ -72,7 +72,7 @@ class DaoPokemonDataSourceTest {
     @Test
     fun `removed one pokemon in dao execute ok`() {
         runBlocking {
-            dataSource.setFreePokemonCatched(any())
+            dataSource.setFreePokemonCaught(any())
         }
     }
 

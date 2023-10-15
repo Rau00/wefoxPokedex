@@ -49,7 +49,7 @@ class PokemonRepositoyImplTest {
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCatched()).thenReturn(pokemonList)
+            whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
 
             repository = PokemonRepositoyImpl(remoteDataSource, daoDataSource)
         }
@@ -79,7 +79,7 @@ class PokemonRepositoyImplTest {
     fun `get the backpack a convert to model view`(){
         runBlocking {
             repository.getBackpack()
-            assertEquals(daoPokemon.name, repository.pokemonCatched.value!![0].name)
+            assertEquals(daoPokemon.name, repository.pokemonCaught.value!![0].name)
         }
     }
 
@@ -87,7 +87,7 @@ class PokemonRepositoyImplTest {
     fun `store pokemon in backpack execution OK`(){
         runBlocking {
             repository.searchPokemon()
-            repository.pokemonCatched()
+            repository.pokemonCaught()
         }
     }
 

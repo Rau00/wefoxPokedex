@@ -5,14 +5,14 @@ import technical.test.pokedex.data.datasources.local.database.PokemonDao
 
 class PokemonLocalDataSourceImpl(private val pokemonDao: PokemonDao): PokemonLocalDataSource {
 
-    override suspend fun getPokemonsCatched(): Result<List<PokemonEntity>> =
+    override suspend fun getPokemonsCaught(): Result<List<PokemonEntity>> =
         Result.success(pokemonDao.getAllPokemon())
 
-    override suspend fun storePokemonCatched(pokemon: PokemonEntity) {
+    override suspend fun storePokemonCaught(pokemon: PokemonEntity) {
         pokemonDao.insertPokemon(pokemon = pokemon)
     }
 
-    override suspend fun setFreePokemonCatched(pokemonId: Int) {
+    override suspend fun setFreePokemonCaught(pokemonId: Int) {
         pokemonDao.deletePokemon(pokemonId = pokemonId)
     }
 

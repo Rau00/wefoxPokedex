@@ -60,7 +60,7 @@ class BackpackFragment : Fragment() {
     private fun setupObservers() {
         viewModel.pokemonUsercase.observe(viewLifecycleOwner, Observer { pokemonUserCase ->
             when(pokemonUserCase) {
-                is PokemonUserCaseModel.PokemonsCatched -> {setupAdapter(pokemonUserCase.pokemonsCatched)}
+                is PokemonUserCaseModel.PokemonsCaught -> {setupAdapter(pokemonUserCase.pokemonsCaught)}
                 is PokemonUserCaseModel.BackpackEmpty -> {showDialogBackpackEmpty() }
                 else -> {}
             }
