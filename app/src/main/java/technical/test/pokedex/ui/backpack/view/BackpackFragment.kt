@@ -42,6 +42,7 @@ class BackpackFragment : Fragment() {
         setupViewModel()
         activity?.lifecycleScope?.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.updateBackpack()
                 setupObservers()
             }
         }

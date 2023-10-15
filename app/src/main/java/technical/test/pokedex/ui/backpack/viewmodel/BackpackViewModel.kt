@@ -23,6 +23,11 @@ class BackpackViewModel(private val getBackpackUseCase: GetBackpackUseCase) : Vi
         router = BackpackRouterImpl(activity)
     }
 
+    fun updateBackpack() {
+        if (pokemonBackpackResult.value != PokemonViewStates.Idle) {
+            getBackpack()
+        }
+    }
     fun getBackpack() {
         viewModelScope.launch {
             _pokemonBackpackResult.emit(PokemonViewStates.Loading)
