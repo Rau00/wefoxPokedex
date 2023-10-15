@@ -25,13 +25,13 @@ class PokemonRepositoryImpl(
         daoDataSource.storePokemonCaught(pokemonCaught.toEntity())
     }
 
-    override suspend fun setFreePokemon(id: Int) {
+    override suspend fun freePokemon(id: Int) {
         runBlocking {
             daoDataSource.setFreePokemonCaught(id)
         }
     }
 
-    override suspend fun setFreeAllPokemon() {
+    override suspend fun freeAllPokemon() {
         runBlocking {
             daoDataSource.setFreeAllPokemon()
         }
