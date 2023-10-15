@@ -16,7 +16,7 @@ import technical.test.pokedex.domain.PokemonType
 import technical.test.pokedex.domain.PokemonTypeName
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.repository.PokemonRepository
-import technical.test.pokedex.data.repository.PokemonRepositoyImpl
+import technical.test.pokedex.data.repository.PokemonRepositoryImpl
 
 class BackpackViewModelImplTest {
 
@@ -51,7 +51,7 @@ class BackpackViewModelImplTest {
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
             whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
-            repository = PokemonRepositoyImpl(mock(), daoDataSource)
+            repository = PokemonRepositoryImpl(mock(), daoDataSource)
             viewModel = BackpackViewModelImpl(repository)
         }
     }

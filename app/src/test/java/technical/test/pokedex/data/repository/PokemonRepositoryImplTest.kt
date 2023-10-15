@@ -18,7 +18,7 @@ import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.data.datasources.remote.network.model.ResultData
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 
-class PokemonRepositoyImplTest {
+class PokemonRepositoryImplTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -51,7 +51,7 @@ class PokemonRepositoyImplTest {
             pokemonList.add(daoPokemon)
             whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
 
-            repository = PokemonRepositoyImpl(remoteDataSource, daoDataSource)
+            repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
         }
     }
 

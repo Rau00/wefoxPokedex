@@ -18,7 +18,7 @@ import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.data.datasources.remote.network.model.ResultData
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.repository.PokemonRepository
-import technical.test.pokedex.data.repository.PokemonRepositoyImpl
+import technical.test.pokedex.data.repository.PokemonRepositoryImpl
 
 class PokemonHunterViewModelImplTest {
     @get:Rule
@@ -64,7 +64,7 @@ class PokemonHunterViewModelImplTest {
             pokemonList.add(daoPokemon)
             whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
             whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
-            repository = PokemonRepositoyImpl(remoteDataSource, daoDataSource)
+            repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
             viewModel = PokemonHunterViewModelImpl(repository)
 
             //Mocked classes
