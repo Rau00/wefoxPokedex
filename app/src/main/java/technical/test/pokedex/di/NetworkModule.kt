@@ -1,8 +1,19 @@
 package technical.test.pokedex.di
 
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import technical.test.pokedex.data.datasources.remote.network.interfaces.ApiInterface
 import technical.test.pokedex.data.datasources.remote.network.interfaces.ApiService
+import javax.inject.Singleton
 
-val networkModule = module {
-    single { ApiService.create() }
+@InstallIn(SingletonComponent::class)
+@Module
+object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideApi(): ApiInterface =
+        ApiService.create()
 }

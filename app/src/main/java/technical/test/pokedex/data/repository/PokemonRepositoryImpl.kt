@@ -5,8 +5,9 @@ import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.domain.models.mapper.toEntity
 import technical.test.pokedex.domain.models.mapper.toModel
+import javax.inject.Inject
 
-class PokemonRepositoryImpl(
+class PokemonRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val daoDataSource: PokemonLocalDataSource
 ) : PokemonRepository {

@@ -4,7 +4,7 @@ Architecture MVVM + Router
 
 Language -> Kotlin
 
-Branch Policity -> Git Flow
+Branch Policy -> Git Flow
 
 Technologies:
 
@@ -20,11 +20,10 @@ Technologies:
 - Room
   - To save and get information from DataBase
 
-- Koin -> Dependences injection
-    - It is written in kotlin, so it is more efficient when the application is written in kotlin, on the other hand the learning curve is less than dagger2
+- ~~Koin~~ Hilt -> Dependencies injection
 
 - JUnit: Testing
-- Not incluyed in this test, to integration testing --> Expresso
+- Not included in this test, to integration testing --> Expresso
 
 ![alt text](https://github.com/Rau00/wefoxPokedex/blob/master/architectureMVVM%2BRouter.png)
 

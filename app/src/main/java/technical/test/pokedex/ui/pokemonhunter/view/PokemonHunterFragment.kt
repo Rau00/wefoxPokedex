@@ -5,26 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.ui.PokemonViewStates
-import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.databinding.PokemonHunterFragmentBinding
+import technical.test.pokedex.domain.models.PokemonModel
+import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModel
 
+@AndroidEntryPoint
 class PokemonHunterFragment : Fragment() {
 
     companion object {
         fun newInstance() = PokemonHunterFragment()
     }
 
-    private lateinit var viewModel: PokemonHunterViewModel
+    private val viewModel: PokemonHunterViewModel by viewModels()
     private lateinit var binding: PokemonHunterFragmentBinding
 
     override fun onCreateView(
@@ -37,7 +38,6 @@ class PokemonHunterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = getViewModel()
         setupListeners()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

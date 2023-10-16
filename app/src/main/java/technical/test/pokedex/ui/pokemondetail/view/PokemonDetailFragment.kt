@@ -6,21 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
-import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.databinding.PokemonDetailFragmentBinding
+import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.pokemondetail.viewmodel.PokemonDetailViewModel
 import technical.test.pokedex.utils.constans.Constants
 
 class PokemonDetailFragment : Fragment() {
 
-    private lateinit var viewModel: PokemonDetailViewModel
+    private val viewModel: PokemonDetailViewModel by viewModels()
     private lateinit var binding: PokemonDetailFragmentBinding
 
     override fun onCreateView(
@@ -33,7 +33,6 @@ class PokemonDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = getViewModel()
         getPokemon()
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

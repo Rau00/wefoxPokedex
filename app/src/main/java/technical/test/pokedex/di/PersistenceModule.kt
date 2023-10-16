@@ -1,8 +1,20 @@
 package technical.test.pokedex.di
 
-import org.koin.dsl.module
+import android.app.Application
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import technical.test.pokedex.data.datasources.local.database.PokemonDDBB
+import technical.test.pokedex.data.datasources.local.database.PokemonDao
+import javax.inject.Singleton
 
-val persistenceModule = module {
-    single { PokemonDDBB.getDatabase(get()).getPokemonDao() }
+@InstallIn(SingletonComponent::class)
+@Module
+object PersistenceModule {
+
+    @Provides
+    @Singleton
+    fun provideDao(app: Application): PokemonDao =
+        PokemonDDBB.getDatabase(app).getPokemonDao()
 }

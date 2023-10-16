@@ -4,8 +4,9 @@ import retrofit2.HttpException
 import technical.test.pokedex.data.datasources.remote.network.exceptions.RemoteDataNotFoundException
 import technical.test.pokedex.data.datasources.remote.network.interfaces.ApiInterface
 import technical.test.pokedex.data.datasources.remote.responses.PokemonResponse
+import javax.inject.Inject
 
-class RemotePokemonDataSource(private val apiInterface: ApiInterface) :
+class RemotePokemonDataSource @Inject constructor(private val apiInterface: ApiInterface) :
     RemoteDataSource {
 
     override suspend fun getPokemon(pokemonId: Int): Result<PokemonResponse> =

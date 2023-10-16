@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'kotlin-parcelize'
+apply plugin:  'kotlin-kapt'
+apply plugin:  'com.google.dagger.hilt.android'
 
 android {
     namespace 'technical.test.pokedex'
@@ -61,6 +63,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
+    implementation 'androidx.fragment:fragment-ktx:1.6.1'
+
     //Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
@@ -86,19 +90,18 @@ dependencies {
     implementation 'com.github.stfalcon:mvphelper:0.2.1'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
-    // Koin for Kotlin
-    implementation "org.koin:koin-core:$koin_version"
-    testImplementation "org.koin:koin-test:$koin_version" // for unit tests
-    androidTestImplementation "org.koin:koin-test:$koin_version" // for instrumented tests
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-android-architecture:0.9.1"
-
-    // Koin AndroidX ViewModel features
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    // Hilt for Kotlin
+    implementation "com.google.dagger:hilt-android:2.48.1"
+    kapt "com.google.dagger:hilt-compiler:2.48.1"
 
     //Room, data persistence
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

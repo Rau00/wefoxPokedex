@@ -1,22 +1,20 @@
 package technical.test.pokedex.ui.pokemonhunter.viewmodel
 
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
-import technical.test.pokedex.ui.PokemonViewStates
-import technical.test.pokedex.data.repository.PokemonRepository
 import technical.test.pokedex.domain.GetBackpackUseCase
 import technical.test.pokedex.domain.PokemonCaughtUseCase
 import technical.test.pokedex.domain.SearchPokemonUseCase
 import technical.test.pokedex.domain.models.PokemonModel
+import technical.test.pokedex.ui.PokemonViewStates
+import javax.inject.Inject
 
-class PokemonHunterViewModel(
+@HiltViewModel
+class PokemonHunterViewModel @Inject constructor(
     private val getBackpackUseCase: GetBackpackUseCase,
     private val searchPokemonUseCase: SearchPokemonUseCase,
     private val pokemonCaughtUseCase: PokemonCaughtUseCase

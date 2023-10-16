@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import technical.test.pokedex.R
 import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.databinding.BackpackFragmentBinding
@@ -20,13 +21,14 @@ import technical.test.pokedex.ui.adapters.backpack.BackpackAdapter
 import technical.test.pokedex.ui.backpack.viewmodel.BackpackViewModel
 import technical.test.pokedex.ui.components.dialog.DialogComponent
 
+@AndroidEntryPoint
 class BackpackFragment : Fragment() {
 
     companion object {
         fun newInstance() = BackpackFragment()
     }
 
-    private lateinit var viewModel: BackpackViewModel
+    private val viewModel: BackpackViewModel by viewModels()
     private lateinit var binding: BackpackFragmentBinding
 
     override fun onCreateView(
@@ -50,13 +52,17 @@ class BackpackFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        viewModel = getViewModel()
+
         activity?.let { viewModel.initRouter(activity as Activity) }
     }
 
     private fun setupListener() {
         binding.fabHunting.setOnClickListener {
             viewModel.goHunting()
+        }
+
+        binding.fabSort.setOnClickListener {
+            viewModel.sortAlphabetical()
         }
     }
 
