@@ -35,15 +35,15 @@ class PokemonHunterViewModel(
     fun searchPokemon() {
         viewModelScope.launch {
             _pokemonFound.emit(PokemonViewStates.Loading)
-            executePokemonSearchResult(searchPokemonUseCase.execute())
+            executePokemonSearchResult(searchPokemonUseCase())
         }
     }
 
     fun catchPokemon() {
         viewModelScope.launch {
             pokemon?.let {
-                pokemonCaughtUseCase.execute(it)
-                executePokemonSearchResult(searchPokemonUseCase.execute())
+                pokemonCaughtUseCase(it)
+                executePokemonSearchResult(searchPokemonUseCase())
             }
         }
     }
@@ -62,7 +62,7 @@ class PokemonHunterViewModel(
     fun checkPokemonCaught() {
         viewModelScope.launch {
             pokemon?.let {
-                getBackpackUseCase.execute().onSuccess { pokemonList ->
+                getBackpackUseCase().onSuccess { pokemonList ->
                     isCaught(pokemonList, it)
                 }
             }

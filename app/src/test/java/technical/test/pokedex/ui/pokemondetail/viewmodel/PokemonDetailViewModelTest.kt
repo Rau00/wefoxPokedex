@@ -22,8 +22,8 @@ class PokemonDetailViewModelTest {
     fun setUp() {
 
         pokemon = PokemonModel(
-            "bulbasur", "2", "3",
-            "urlImageDAO", "lunes", "5", listOf("planta"))
+            6, "bulbasur", 2, 3,
+            4, "urlImageDAO", "lunes", 5, listOf("planta"))
         viewModel = PokemonDetailViewModel()
     }
 

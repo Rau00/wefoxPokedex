@@ -5,6 +5,6 @@ import technical.test.pokedex.domain.models.PokemonModel
 
 class PokemonCaughtUseCase(private val pokemonRepository: PokemonRepository) {
 
-    suspend fun execute(pokemonModel: PokemonModel) =
+    suspend operator fun invoke(pokemonModel: PokemonModel) =
         pokemonRepository.pokemonCaught(pokemonModel)
 }

@@ -1,22 +1,25 @@
 package technical.test.pokedex.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
-import technical.test.pokedex.data.datasources.remote.network.exceptions.RemoteDataNotFoundException
-import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
-import technical.test.pokedex.domain.PokemonSprites
-import technical.test.pokedex.domain.PokemonType
-import technical.test.pokedex.domain.PokemonTypeName
-import technical.test.pokedex.data.datasources.remote.RemoteDataSource
-import technical.test.pokedex.data.datasources.remote.network.model.ResultData
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.data.datasources.remote.RemoteDataSource
+import technical.test.pokedex.data.datasources.remote.network.exceptions.RemoteDataNotFoundException
+import technical.test.pokedex.data.datasources.remote.responses.PokemonResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonSpritesResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeNameResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeResponse
+import technical.test.pokedex.domain.models.mapper.toModel
 
 class PokemonRepositoryImplTest {
 
@@ -31,25 +34,25 @@ class PokemonRepositoryImplTest {
     lateinit var daoDataSource: PokemonLocalDataSource
 
     //Utilities
-    lateinit var remotePokemon: PokemonEntity
+    lateinit var remotePokemon: PokemonResponse
     lateinit var daoPokemon: PokemonEntity
 
     @Before
     fun setUp() {
-        runBlocking {
+        runTest {
             remoteDataSource = mock()
             daoDataSource = mock()
-            val typeRemote = listOf(PokemonType(PokemonTypeName("electrico")))
-            val typeDao = listOf(PokemonType(PokemonTypeName("planta")))
-            remotePokemon = PokemonEntity(0, "pikachu", 7, 40, 12,
-                    PokemonSprites("urlImageAPI"), "lunes", 34, typeRemote)
+            val typeRemote = listOf(PokemonTypeResponse(PokemonTypeNameResponse("electrico")))
+            val typeDao = listOf("planta")
+            remotePokemon = PokemonResponse(0, "pikachu", 7, 40, 12,
+                PokemonSpritesResponse("urlImageAPI"), 34, typeRemote)
             daoPokemon = PokemonEntity(1, "bulbasur", 2, 3, 4,
-                    PokemonSprites("urlImageDAO"), "martes", 123, typeDao)
+                "urlImageDAO", "martes", 123, typeDao)
 
-            whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
+            whenever(remoteDataSource.getPokemon(any())).thenReturn(Result.success(remotePokemon))
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
+            whenever(daoDataSource.getPokemonsCaught()).thenReturn(Result.success(pokemonList))
 
             repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
         }
@@ -57,47 +60,50 @@ class PokemonRepositoryImplTest {
 
     @Test
     fun `get remote pokemon a convert to model view`(){
-            runBlocking {
+            runTest {
                 launch {
-                    repository.searchPokemon()
-                    assertEquals(remotePokemon.name, repository.pokemonFounded.value!!.name)
+                    val actual = repository.searchPokemon(0)
+                    assertEquals(remotePokemon.name, actual.getOrNull()?.name)
                 }
             }
     }
 
     @Test
     fun `get remote pokemon error not data`(){
-        runBlocking {
+        runTest {
             val exception = RemoteDataNotFoundException()
             doAnswer { throw exception }.`when`(remoteDataSource).getPokemon(any())
-            repository.searchPokemon()
-            assertEquals(exception.message, repository.errorDataFound.value)
+            val actual = repository.searchPokemon(0)
+            assertEquals(exception, actual.exceptionOrNull())
         }
     }
 
     @Test
     fun `get the backpack a convert to model view`(){
-        runBlocking {
-            repository.getBackpack()
-            assertEquals(daoPokemon.name, repository.pokemonCaught.value!![0].name)
+        runTest {
+            val actual =  repository.getBackpack()
+            assertEquals(daoPokemon.name, actual.getOrNull()?.get(0)?.name)
         }
     }
 
     @Test
     fun `store pokemon in backpack execution OK`(){
-        runBlocking {
-            repository.searchPokemon()
-            repository.pokemonCaught()
+        runTest {
+            repository.pokemonCaught(remotePokemon.toModel())
         }
     }
 
     @Test
     fun `remove all pokemon execution OK`(){
-        repository.freeAllPokemon()
+        runTest {
+            repository.freeAllPokemon()
+        }
     }
 
     @Test
     fun `remove any pokemon execution OK`(){
-        repository.freePokemon(any())
+        runTest {
+            repository.freePokemon(any())
+        }
     }
 }

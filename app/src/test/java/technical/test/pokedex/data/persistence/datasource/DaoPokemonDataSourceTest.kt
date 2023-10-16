@@ -1,22 +1,18 @@
 package technical.test.pokedex.data.persistence.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSourceImpl
-import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
-import technical.test.pokedex.domain.PokemonSprites
-import technical.test.pokedex.domain.PokemonType
-import technical.test.pokedex.domain.PokemonTypeName
 import technical.test.pokedex.data.datasources.local.database.PokemonDao
+import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
 
 class DaoPokemonDataSourceTest {
 
@@ -34,12 +30,12 @@ class DaoPokemonDataSourceTest {
 
     @Before
     fun setUp() {
-        runBlocking {
+        runTest {
             dao = mock()
-            val type = listOf(PokemonType(PokemonTypeName("planta")))
+            val type = listOf("planta")
             daoPokemon =
                 PokemonEntity(0, "pikachu", 7, 40, 12,
-                    PokemonSprites("urlImage"), "lunes", 4, type)
+                    "urlImage", "lunes", 4, type)
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
             whenever(dao.getAllPokemon()).thenReturn(pokemonList)
@@ -49,29 +45,29 @@ class DaoPokemonDataSourceTest {
 
     @Test
     fun `get all pokemon in dao execute ok`() {
-        runBlocking {
-            val pokemonList = dataSource.getPokemonsCaught()
-            assertEquals(daoPokemon.name, pokemonList[0].name)
+        runTest {
+            val pokemonListResult = dataSource.getPokemonsCaught()
+            assertEquals(daoPokemon.name, pokemonListResult.getOrNull()?.get(0)?.name)
         }
     }
 
     @Test
     fun `insert pokemon in dao execute ok`() {
-        runBlocking {
+        runTest {
             dataSource.storePokemonCaught(daoPokemon)
         }
     }
 
     @Test
     fun `removed all pokemon in dao execute ok`() {
-        runBlocking {
+        runTest {
             dataSource.setFreeAllPokemon()
         }
     }
 
     @Test
     fun `removed one pokemon in dao execute ok`() {
-        runBlocking {
+        runTest {
             dataSource.setFreePokemonCaught(any())
         }
     }

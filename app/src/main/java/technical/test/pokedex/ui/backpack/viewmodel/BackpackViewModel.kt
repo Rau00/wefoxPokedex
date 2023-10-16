@@ -31,7 +31,7 @@ class BackpackViewModel(private val getBackpackUseCase: GetBackpackUseCase) : Vi
     fun getBackpack() {
         viewModelScope.launch {
             _pokemonBackpackResult.emit(PokemonViewStates.Loading)
-            getBackpackUseCase.execute()
+            getBackpackUseCase()
                 .onSuccess {
                     if (it.isEmpty()) {
                         _pokemonBackpackResult.emit(PokemonViewStates.BackpackEmpty)

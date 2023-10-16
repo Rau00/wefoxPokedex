@@ -10,6 +10,6 @@ class SearchPokemonUseCase (private val pokemonRepository: PokemonRepository) {
         private const val RANDOM_MAX = 1000
     }
 
-    suspend fun execute(): Result<PokemonModel> =
+    suspend operator fun invoke(): Result<PokemonModel> =
         pokemonRepository.searchPokemon((RANDOM_MIN..RANDOM_MAX).random())
 }

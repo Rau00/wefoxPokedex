@@ -1,6 +1,5 @@
 package technical.test.pokedex.data.repository
 
-import kotlinx.coroutines.runBlocking
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.domain.models.PokemonModel
@@ -26,15 +25,12 @@ class PokemonRepositoryImpl(
     }
 
     override suspend fun freePokemon(id: Int) {
-        runBlocking {
-            daoDataSource.setFreePokemonCaught(id)
-        }
+        daoDataSource.setFreePokemonCaught(id)
+
     }
 
     override suspend fun freeAllPokemon() {
-        runBlocking {
-            daoDataSource.setFreeAllPokemon()
-        }
+        daoDataSource.setFreeAllPokemon()
     }
 
     private fun sortByOrder(pokemonBackpack: List<PokemonModel>): List<PokemonModel> {

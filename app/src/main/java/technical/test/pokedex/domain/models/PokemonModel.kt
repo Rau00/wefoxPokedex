@@ -11,7 +11,7 @@ data class PokemonModel(
     val height: Int,
     val order: Int,
     val sprite: String,
+    val dateCaught: String = "",
     val baseExperience: Int,
-    val types: List<String>,
-    val dateCaught: String = ""
+    val types: List<String>
 ): Parcelable

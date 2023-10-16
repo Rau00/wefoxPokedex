@@ -1,22 +1,21 @@
 package technical.test.pokedex.data.network.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.doAnswer
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import retrofit2.HttpException
 import technical.test.pokedex.CoroutinesTestRule
 import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.data.datasources.remote.RemotePokemonDataSource
 import technical.test.pokedex.data.datasources.remote.network.interfaces.ApiInterface
-import technical.test.pokedex.data.datasources.remote.network.model.ResultData
 import technical.test.pokedex.data.datasources.remote.responses.PokemonResponse
 import technical.test.pokedex.data.datasources.remote.responses.PokemonSpritesResponse
 import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeNameResponse
@@ -42,8 +41,8 @@ class RemoteDataSourceTest {
 
     @Before
     fun setUp() {
-        runBlocking {
-            service = mock()
+        runTest {
+            service = mock(ApiInterface::class.java)
             val type = listOf(PokemonTypeResponse(PokemonTypeNameResponse("planta")))
             pokemonDefined =
                 PokemonResponse(0, "pikachu", 7, 40, 12,
@@ -55,20 +54,16 @@ class RemoteDataSourceTest {
 
     @Test
     fun `fetch Pokemon response OK`() {
-        runBlocking {
+        runTest {
             val pokemon = dataSource.getPokemon(any())
-            if (pokemon is ResultData.Success) {
-                assertEquals(pokemonDefined.id, pokemon.data.id)
-                assertEquals(pokemonDefined.name, pokemon.data.name)
-            } else {
-                fail()
-            }
+                assertEquals(pokemonDefined.id, pokemon.getOrNull()?.id)
+                assertEquals(pokemonDefined.name, pokemon.getOrNull()?.name)
         }
     }
 
     @Test
     fun `fetch Pokemon response Fail Throwable`() {
-        runBlocking {
+        runTest {
             val exception = Throwable()
             doAnswer { throw exception }.`when`(service).fetchPokemon(any())
             try {
@@ -81,7 +76,7 @@ class RemoteDataSourceTest {
 
     @Test
     fun `fetch Pokemon response Fail HttpException`() {
-        runBlocking {
+        runTest {
             val exception: HttpException = mock()
             doAnswer { throw exception }.`when`(service).fetchPokemon(any())
             try {

@@ -1,24 +1,23 @@
 package technical.test.pokedex.ui.pokemonhunter.viewmodel
 
-import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import technical.test.pokedex.CoroutinesTestRule
-import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
-import technical.test.pokedex.domain.PokemonSprites
-import technical.test.pokedex.domain.PokemonType
-import technical.test.pokedex.domain.PokemonTypeName
-import technical.test.pokedex.data.datasources.remote.RemoteDataSource
-import technical.test.pokedex.data.datasources.remote.network.model.ResultData
-import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
-import technical.test.pokedex.data.repository.PokemonRepository
-import technical.test.pokedex.data.repository.PokemonRepositoryImpl
+import technical.test.pokedex.domain.GetBackpackUseCase
+import technical.test.pokedex.domain.PokemonCaughtUseCase
+import technical.test.pokedex.domain.SearchPokemonUseCase
+import technical.test.pokedex.domain.models.PokemonModel
+import technical.test.pokedex.ui.PokemonViewStates
 
 class PokemonHunterViewModelImplTest {
     @get:Rule
@@ -27,93 +26,73 @@ class PokemonHunterViewModelImplTest {
     @get:Rule
     var coroutinesTestRule = CoroutinesTestRule()
 
-    //Target test
-    lateinit var viewModel: PokemonHunterViewModel
-    lateinit var viewModelMocked: PokemonHunterViewModel
-
     //Collaborators
-    lateinit var repository: PokemonRepository
-    lateinit var repositoryMocked: PokemonRepository
-    lateinit var daoDataSource: PokemonLocalDataSource
-    lateinit var remoteDataSource: RemoteDataSource
+    private val getBackpackUseCase: GetBackpackUseCase = mock()
+    private val searchPokemonUseCase: SearchPokemonUseCase = mock()
+    private val pokemonCaughtUseCase: PokemonCaughtUseCase = mock()
+
+    //Target test
+    private var viewModel = PokemonHunterViewModel(getBackpackUseCase, searchPokemonUseCase, pokemonCaughtUseCase)
 
     //Utilities
-    lateinit var daoPokemon: PokemonEntity
-    lateinit var remotePokemon: PokemonEntity
-    lateinit var type: List<PokemonType>
+    private lateinit var pokemonModel: PokemonModel
 
     @Before
     fun setUp() {
-        runBlocking {
-            daoDataSource = mock()
-            remoteDataSource = mock()
-            type = listOf(PokemonType(PokemonTypeName("planta")))
-            daoPokemon = PokemonEntity(
+        runTest {
+
+            pokemonModel = PokemonModel(
                 1, "bulbasur",
-                2, 3, 4, PokemonSprites("urlImageDAO"),
-                "lunes", 5, type
+                2, 3, 4, "urlImageDAO",
+                "lunes", 5, listOf("planta")
             )
 
-            remotePokemon = PokemonEntity(
-                1, "bulbasur",
-                2, 3, 4, PokemonSprites("urlImageDAO"),
-                "lunes", 5, type
-            )
-
-            val pokemonList = mutableListOf<PokemonEntity>()
-            pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCaught()).thenReturn(pokemonList)
-            whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
-            repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
-            viewModel = PokemonHunterViewModel(repository)
-
-            //Mocked classes
-            repositoryMocked = mock()
-            viewModelMocked = PokemonHunterViewModel(repositoryMocked)
+            val pokemonList = mutableListOf<PokemonModel>()
+            pokemonList.add(pokemonModel)
+            whenever(getBackpackUseCase()).thenReturn(Result.success(pokemonList))
+            whenever(searchPokemonUseCase()).thenReturn(Result.success(pokemonModel))
         }
     }
 
     @Test
     fun `get remote pokemon OK`() {
-        viewModel.searchPokemon(Dispatchers.Main)
-        assertEquals(remotePokemon.name, viewModel.pokemonFounded.value!!.name)
+        viewModel.searchPokemon()
+        assertEquals(PokemonViewStates.PokemonFounded(pokemonModel), viewModel.pokemonFound.value)
     }
 
     @Test
     fun `get remote pokemon call respository OK`() {
-        runBlocking {
-            viewModelMocked.searchPokemon(Dispatchers.Main)
-            verify(repositoryMocked, times(1)).searchPokemon()
+        runTest {
+            viewModel.searchPokemon()
+            verify(searchPokemonUseCase, times(1)).invoke()
         }
     }
 
     @Test
-    fun `catch pokemon pokemon call respository OK`() {
-        runBlocking {
-            viewModelMocked.catchPokemon(Dispatchers.Main)
-            verify(repositoryMocked, times(1)).pokemonCaught()
-            verify(repositoryMocked, times(1)).getBackpack()
-            verify(repositoryMocked, times(1)).searchPokemon()
+    fun `catch pokemon pokemon call repository OK`() {
+        runTest {
+            viewModel.searchPokemon()
+            viewModel.catchPokemon()
+            verify(pokemonCaughtUseCase, times(1)).invoke(any())
+            verify(searchPokemonUseCase, times(2)).invoke()
         }
     }
 
     @Test
-    fun `check pokemon is catched`() {
-        viewModel.catchPokemon(Dispatchers.Main)
+    fun `check pokemon is caught`() {
+        viewModel.searchPokemon()
+        viewModel.catchPokemon()
         viewModel.checkPokemonCaught()
-        assertTrue(viewModel.isCaught.value == View.GONE)
+        assertTrue(viewModel.isPokemonCaught.value)
     }
 
     @Test
-    fun `check pokemon is not catched`() {
-        runBlocking {
-            remotePokemon = PokemonEntity(1, "pikachu", 2,
-                3, 4, PokemonSprites("urlImageDAO"),
-                "lunes", 5, type)
-            whenever(remoteDataSource.getPokemon(any())).thenReturn(ResultData.Success(remotePokemon))
-            viewModel.catchPokemon(Dispatchers.Main)
+    fun `check pokemon is not caught`() {
+        runTest {
+            viewModel.searchPokemon()
+            viewModel.catchPokemon()
             viewModel.checkPokemonCaught()
-            assertTrue(viewModel.isCaught.value == View.VISIBLE)
+            assertTrue(viewModel.isPokemonCaught.value)
         }
 
     }
