@@ -63,9 +63,6 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
     }
 
     fun sortAlphabetical() {
-
-
-
         if (_pokemonBackpackResult.value is PokemonViewStates.PokemonCaughtList) {
             val list: List<PokemonModel> = (_pokemonBackpackResult.value as PokemonViewStates.PokemonCaughtList).pokemonCaughtList
             _pokemonBackpackResult.value = PokemonViewStates.Loading
