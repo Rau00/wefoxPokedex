@@ -79,6 +79,7 @@ dependencies {
 
     //Image Download
     implementation ("com.github.bumptech.glide:glide:4.13.0") // will be change by coil
+    implementation(libs.coil)
 
     // Kotlin coroutines
     implementation (libs.kotlin.coroutines)
@@ -93,6 +94,7 @@ dependencies {
 
     // Hilt for Kotlin
     implementation (libs.hilt.android)
+    implementation (libs.hilt.compose)
     kapt (libs.hilt.compiler)
 
     //Room, data persistence
