@@ -1,5 +1,7 @@
 package technical.test.pokedex.data.repository
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.domain.models.PokemonModel
@@ -16,7 +18,7 @@ class PokemonRepositoryImpl @Inject constructor(
         remoteDataSource.getPokemon(pokemonId).map { it.toModel() }
 
 
-    override suspend fun getBackpack(): Result<List<PokemonModel>> =
+    override suspend fun getBackpack(): Flow<List<PokemonModel>> =
         daoDataSource.getPokemonsCaught().map { pokemonList ->
             sortByOrder(pokemonList.map { it.toModel() })
         }

@@ -60,7 +60,7 @@ class PokemonHunterViewModel @Inject constructor(
     fun checkPokemonCaught() {
         viewModelScope.launch {
             pokemon?.let {
-                getBackpackUseCase().onSuccess { pokemonList ->
+                getBackpackUseCase().collect { pokemonList ->
                     isCaught(pokemonList, it)
                 }
             }

@@ -3,6 +3,7 @@ package technical.test.pokedex.data.datasources.local.database
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
 import technical.test.pokedex.utils.constans.Constants
 
@@ -10,7 +11,7 @@ import technical.test.pokedex.utils.constans.Constants
 interface PokemonDao {
 
     @Query("SELECT * from ${Constants.PERSISTENCE_TABLE}")
-    suspend fun getAllPokemon(): List<PokemonEntity>
+    fun getAllPokemon(): Flow<List<PokemonEntity>>
 
     @Insert
     suspend fun insertPokemon(pokemon: PokemonEntity)
