@@ -21,12 +21,6 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
         MutableStateFlow(PokemonViewStates.Idle)
     val pokemonBackpackResult = _pokemonBackpackResult.asStateFlow()
 
-    private lateinit var router: BackpackRouter
-
-    fun initRouter(activity: Activity) {
-        router = BackpackRouterImpl(activity)
-    }
-
     fun updateBackpack() {
         if (pokemonBackpackResult.value != PokemonViewStates.Idle) {
             getBackpack()
@@ -54,12 +48,12 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
         }
     }
 
-    fun goHunting() {
-        router.goHunting()
+    fun goHunting(activity: Activity) {
+        BackpackRouterImpl.goHunting(activity)
     }
 
-    fun seePokemonDetail(pokemon: PokemonModel) {
-        router.seePokemonDetail(pokemon)
+    fun seePokemonDetail(activity: Activity, pokemon: PokemonModel) {
+        BackpackRouterImpl.seePokemonDetail(activity, pokemon)
     }
 
     fun sortAlphabetical() {

@@ -2,6 +2,13 @@ package technical.test.pokedex.ui.components.dialog
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 
 class DialogComponent(val context: Context) {
 
@@ -47,4 +54,50 @@ class DialogComponent(val context: Context) {
             .setMessage(message)
             .setCancelable(false)
     }
+}
+
+@Composable
+fun AlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+    confirmButtonText: String = "Confirm",
+    dismissButtonText: String = "Dismiss",
+    icon: ImageVector? = null,
+) {
+    AlertDialog(
+        icon = {
+            icon?.let {
+                Icon(icon, contentDescription = "Example Icon")
+            }
+        },
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text(confirmButtonText)
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text(dismissButtonText)
+            }
+        }
+    )
 }

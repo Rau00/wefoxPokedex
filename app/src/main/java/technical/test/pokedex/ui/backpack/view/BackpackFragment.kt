@@ -1,6 +1,5 @@
 package technical.test.pokedex.ui.backpack.view
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import technical.test.pokedex.R
-import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.databinding.BackpackFragmentBinding
 import technical.test.pokedex.domain.models.PokemonModel
+import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.ui.adapters.backpack.BackpackAdapter
 import technical.test.pokedex.ui.backpack.viewmodel.BackpackViewModel
 import technical.test.pokedex.ui.components.dialog.DialogComponent
@@ -41,7 +40,6 @@ class BackpackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
         activity?.lifecycleScope?.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.updateBackpack()
@@ -51,14 +49,9 @@ class BackpackFragment : Fragment() {
         setupListener()
     }
 
-    private fun setupViewModel() {
-
-        activity?.let { viewModel.initRouter(activity as Activity) }
-    }
-
     private fun setupListener() {
         binding.fabHunting.setOnClickListener {
-            viewModel.goHunting()
+            viewModel.goHunting(requireActivity())
         }
 
         binding.fabSort.setOnClickListener {
@@ -91,7 +84,7 @@ class BackpackFragment : Fragment() {
     private fun setupAdapter(backpackPokemon: List<PokemonModel>) {
         binding.rvBackpack.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = BackpackAdapter(backpackPokemon) { viewModel.seePokemonDetail(it) }
+            adapter = BackpackAdapter(backpackPokemon) { viewModel.seePokemonDetail(requireActivity(), it) }
         }
     }
 
@@ -105,7 +98,7 @@ class BackpackFragment : Fragment() {
             )
             dialogBackpackEmpty.setupActions(
                 textPositive = resources.getString(R.string.positive_backpack_empty),
-                actionPositive = { viewModel.goHunting() },
+                actionPositive = { viewModel.goHunting(requireActivity()) },
                 textNegative = resources.getString(R.string.negative_backpack_empty)
             )
             dialogBackpackEmpty.showDialog()
