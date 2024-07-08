@@ -1,6 +1,8 @@
 package technical.test.pokedex.ui.backpack.viewmodel
 
 import android.app.Activity
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,8 @@ import technical.test.pokedex.ui.backpack.router.BackpackRouterImpl
 import javax.inject.Inject
 
 @HiltViewModel
-class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetBackpackUseCase) : ViewModel() {
+class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetBackpackUseCase) :
+    ViewModel() {
 
     private val _pokemonBackpackResult: MutableStateFlow<PokemonViewStates> =
         MutableStateFlow(PokemonViewStates.Idle)
@@ -31,19 +34,14 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
         viewModelScope.launch {
             _pokemonBackpackResult.emit(PokemonViewStates.Loading)
             getBackpackUseCase()
-                .onSuccess {
+                .collect {
+                    val list: SnapshotStateList<PokemonModel> = mutableStateListOf()
+                    list.addAll(it.shuffled())
                     if (it.isEmpty()) {
                         _pokemonBackpackResult.emit(PokemonViewStates.BackpackEmpty)
                     } else {
-                        _pokemonBackpackResult.emit(PokemonViewStates.PokemonCaughtList(it.shuffled()))
+                        _pokemonBackpackResult.emit(PokemonViewStates.PokemonCaughtList(list))
                     }
-                }
-                .onFailure {
-                    _pokemonBackpackResult.emit(
-                        PokemonViewStates.ErrorDataFound(
-                            it.message ?: "ERROR"
-                        )
-                    )
                 }
         }
     }
@@ -58,13 +56,14 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
 
     fun sortAlphabetical() {
         if (_pokemonBackpackResult.value is PokemonViewStates.PokemonCaughtList) {
-            val list: List<PokemonModel> = (_pokemonBackpackResult.value as PokemonViewStates.PokemonCaughtList).pokemonCaughtList
+            val list: SnapshotStateList<PokemonModel> =
+                (_pokemonBackpackResult.value as PokemonViewStates.PokemonCaughtList).pokemonCaughtList
             _pokemonBackpackResult.value = PokemonViewStates.Loading
 
             viewModelScope.launch {
-            val result = quicksort(list as MutableList<PokemonModel>)
-               // (_pokemonBackpackResult.value as PokemonCaughtList).pokemonCaughtList.sortedWith(
-              //      compareBy(PokemonModel::order).reversed() )
+                val result = quicksort(list)
+                // (_pokemonBackpackResult.value as PokemonCaughtList).pokemonCaughtList.sortedWith(
+                //      compareBy(PokemonModel::order).reversed() )
 
                 _pokemonBackpackResult.emit(PokemonViewStates.PokemonCaughtList(result))
             }
@@ -72,10 +71,10 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
     }
 
     private fun quicksort(
-        list: MutableList<PokemonModel>,
+        list: SnapshotStateList<PokemonModel>,
         left: Int = 0,
         right: Int = list.size - 1
-    ): List<PokemonModel> {
+    ): SnapshotStateList<PokemonModel> {
         var start = left
         var end = right
         val pivot = list[(left + right) / 2].order
@@ -97,11 +96,11 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
             }
         }
 
-        if(left < end) {
+        if (left < end) {
             quicksort(list, left, end)
         }
 
-        if(start < right) {
+        if (start < right) {
             quicksort(list, start, right)
         }
 
