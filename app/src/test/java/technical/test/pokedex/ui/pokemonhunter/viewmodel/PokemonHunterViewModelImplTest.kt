@@ -1,8 +1,11 @@
 package technical.test.pokedex.ui.pokemonhunter.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -32,7 +35,8 @@ class PokemonHunterViewModelImplTest {
     private val pokemonCaughtUseCase: PokemonCaughtUseCase = mock()
 
     //Target test
-    private var viewModel = PokemonHunterViewModel(getBackpackUseCase, searchPokemonUseCase, pokemonCaughtUseCase)
+    private var viewModel =
+        PokemonHunterViewModel(getBackpackUseCase, searchPokemonUseCase, pokemonCaughtUseCase)
 
     //Utilities
     private lateinit var pokemonModel: PokemonModel
@@ -49,7 +53,7 @@ class PokemonHunterViewModelImplTest {
 
             val pokemonList = mutableListOf<PokemonModel>()
             pokemonList.add(pokemonModel)
-            whenever(getBackpackUseCase()).thenReturn(Result.success(pokemonList))
+            whenever(getBackpackUseCase()).thenReturn(MutableStateFlow(pokemonList))
             whenever(searchPokemonUseCase()).thenReturn(Result.success(pokemonModel))
         }
     }
@@ -61,7 +65,7 @@ class PokemonHunterViewModelImplTest {
     }
 
     @Test
-    fun `get remote pokemon call respository OK`() {
+    fun `get remote pokemon call repository OK`() {
         runTest {
             viewModel.searchPokemon()
             verify(searchPokemonUseCase, times(1)).invoke()
@@ -82,19 +86,6 @@ class PokemonHunterViewModelImplTest {
     fun `check pokemon is caught`() {
         viewModel.searchPokemon()
         viewModel.catchPokemon()
-        viewModel.checkPokemonCaught()
-        assertTrue(viewModel.isPokemonCaught.value)
+        assertTrue(viewModel.isCaught)
     }
-
-    @Test
-    fun `check pokemon is not caught`() {
-        runTest {
-            viewModel.searchPokemon()
-            viewModel.catchPokemon()
-            viewModel.checkPokemonCaught()
-            assertTrue(viewModel.isPokemonCaught.value)
-        }
-
-    }
-
 }
