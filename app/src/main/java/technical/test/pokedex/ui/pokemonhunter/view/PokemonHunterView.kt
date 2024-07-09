@@ -14,8 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,7 +35,6 @@ import technical.test.pokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModel
 fun PokemonHunterView(viewModel: PokemonHunterViewModel = hiltViewModel()) {
 
     val pokemonFound by viewModel.pokemonFound.collectAsState()
-    val pokemonCaught = viewModel.isPokemonCaught.collectAsState()
 
     val activity = LocalContext.current as Activity
 
@@ -66,8 +63,6 @@ fun PokemonHunterView(viewModel: PokemonHunterViewModel = hiltViewModel()) {
 
         else -> {}
     }
-
-
 }
 
 @Composable

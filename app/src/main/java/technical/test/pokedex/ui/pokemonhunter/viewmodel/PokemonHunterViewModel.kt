@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import technical.test.pokedex.domain.GetBackpackUseCase
 import technical.test.pokedex.domain.PokemonCaughtUseCase
@@ -26,11 +27,7 @@ class PokemonHunterViewModel @Inject constructor(
         MutableStateFlow(PokemonViewStates.Idle)
     val pokemonFound = _pokemonFound.asStateFlow()
 
-    private val _isPokemonCaught: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isPokemonCaught = _isPokemonCaught.asStateFlow()
-
     var isCaught: Boolean = false
-
     private var pokemon: PokemonModel? = null
 
     fun searchPokemon() {
@@ -61,11 +58,9 @@ class PokemonHunterViewModel @Inject constructor(
     }
 
 
-    suspend fun checkPokemonCaught() {
+    private suspend fun checkPokemonCaught() {
         pokemon?.let {
-            getBackpackUseCase().collect { pokemonList ->
-                isCaught(pokemonList, it)
-            }
+            isCaught(getBackpackUseCase().first(), it)
         }
     }
 
