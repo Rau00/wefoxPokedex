@@ -39,14 +39,16 @@ class PokemonHunterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 setupObservers()
+                setupObserversPokemonCaught()
             }
         }
     }
 
     private suspend fun setupObservers() {
+
         viewModel.pokemonFound.collect { pokemonFountResult ->
             when (pokemonFountResult) {
                 PokemonViewStates.Idle -> {
@@ -70,7 +72,8 @@ class PokemonHunterFragment : Fragment() {
                 else -> {}
             }
         }
-
+    }
+    private suspend fun setupObserversPokemonCaught() {
         viewModel.isPokemonCaught.collect { isCaught ->
             if (isCaught) {
                 binding.btCatch.visibility = View.GONE

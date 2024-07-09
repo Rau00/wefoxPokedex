@@ -1,4 +1,4 @@
-package technical.test.pokedex.ui.components.dialog
+package technical.test.pokedex.ui.components
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon

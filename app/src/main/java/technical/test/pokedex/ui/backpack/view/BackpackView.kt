@@ -33,7 +33,8 @@ import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.ui.backpack.viewmodel.BackpackViewModel
-import technical.test.pokedex.ui.components.dialog.AlertDialog
+import technical.test.pokedex.ui.components.AlertDialog
+import technical.test.pokedex.ui.components.Loading
 
 @Composable
 fun BackpackView(viewModel: BackpackViewModel = hiltViewModel()) {
@@ -52,7 +53,7 @@ fun BackpackView(viewModel: BackpackViewModel = hiltViewModel()) {
         }
 
         PokemonViewStates.Loading -> {
-            CircularProgressIndicator()
+           Loading()
         }
 
         is PokemonViewStates.PokemonCaughtList -> {
