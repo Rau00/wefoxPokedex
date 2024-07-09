@@ -1,6 +1,9 @@
 package technical.test.pokedex.ui.backpack.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -31,20 +34,19 @@ class BackpackViewModelTest {
 
 
     //Utilities
-    private lateinit var pokemonModel: PokemonModel
+    private val type = listOf("planta")
+    private var pokemonModel = PokemonModel(
+    1, "bulbasur",
+    2, 3, 4, "urlImageDAO",
+    "lunes", 5, type
+    )
+    private val pokemonList = SnapshotStateList<PokemonModel>()
 
     @Before
     fun setUp() {
         runTest {
-            val type = listOf("planta")
-            pokemonModel = PokemonModel(
-                1, "bulbasur",
-                2, 3, 4, "urlImageDAO",
-                "lunes", 5, type
-            )
-            val pokemonList = mutableListOf<PokemonModel>()
             pokemonList.add(pokemonModel)
-            whenever(getBackpackUseCase()).thenReturn(Result.success(pokemonList))
+            whenever(getBackpackUseCase()).thenReturn(MutableStateFlow(pokemonList))
             viewModel = BackpackViewModel(getBackpackUseCase)
         }
     }
@@ -53,7 +55,11 @@ class BackpackViewModelTest {
     fun `get Backpack OK`() {
         runTest {
             viewModel.getBackpack()
-            assertEquals(PokemonViewStates.PokemonCaughtList(any()), viewModel.pokemonBackpackResult.value)
+            (getBackpackUseCase() as MutableStateFlow).emit(pokemonList)
+            assertEquals(
+                PokemonViewStates.PokemonCaughtList(pokemonList).pokemonCaughtList[0].name,
+                (viewModel.pokemonBackpackResult.value as PokemonViewStates.PokemonCaughtList).pokemonCaughtList[0].name
+            )
         }
     }
 }

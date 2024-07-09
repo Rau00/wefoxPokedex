@@ -33,8 +33,7 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
     fun getBackpack() {
         viewModelScope.launch {
             _pokemonBackpackResult.emit(PokemonViewStates.Loading)
-            getBackpackUseCase()
-                .collect {
+            getBackpackUseCase().collect {
                     val list: SnapshotStateList<PokemonModel> = mutableStateListOf()
                     list.addAll(it.shuffled())
                     if (it.isEmpty()) {

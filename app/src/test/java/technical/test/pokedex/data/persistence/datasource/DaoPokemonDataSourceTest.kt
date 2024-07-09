@@ -1,6 +1,8 @@
 package technical.test.pokedex.data.persistence.datasource
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -38,7 +40,7 @@ class DaoPokemonDataSourceTest {
                     "urlImage", "lunes", 4, type)
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(dao.getAllPokemon()).thenReturn(pokemonList)
+            whenever(dao.getAllPokemon()).thenReturn(MutableStateFlow(pokemonList))
             dataSource = PokemonLocalDataSourceImpl(dao)
         }
     }
@@ -47,7 +49,7 @@ class DaoPokemonDataSourceTest {
     fun `get all pokemon in dao execute ok`() {
         runTest {
             val pokemonListResult = dataSource.getPokemonsCaught()
-            assertEquals(daoPokemon.name, pokemonListResult.getOrNull()?.get(0)?.name)
+            assertEquals(daoPokemon.name, pokemonListResult.firstOrNull()?.get(0)?.name)
         }
     }
 

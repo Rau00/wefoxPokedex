@@ -1,6 +1,8 @@
 package technical.test.pokedex.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -52,7 +54,7 @@ class PokemonRepositoryImplTest {
             whenever(remoteDataSource.getPokemon(any())).thenReturn(Result.success(remotePokemon))
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
-            whenever(daoDataSource.getPokemonsCaught()).thenReturn(Result.success(pokemonList))
+            whenever(daoDataSource.getPokemonsCaught()).thenReturn(MutableStateFlow(pokemonList))
 
             repository = PokemonRepositoryImpl(remoteDataSource, daoDataSource)
         }
@@ -72,7 +74,7 @@ class PokemonRepositoryImplTest {
     fun `get remote pokemon error not data`(){
         runTest {
             val exception = RemoteDataNotFoundException()
-            doAnswer { throw exception }.`when`(remoteDataSource).getPokemon(any())
+            whenever( remoteDataSource.getPokemon(any()) ).thenReturn( Result.failure(exception) )
             val actual = repository.searchPokemon(0)
             assertEquals(exception, actual.exceptionOrNull())
         }
@@ -82,7 +84,7 @@ class PokemonRepositoryImplTest {
     fun `get the backpack a convert to model view`(){
         runTest {
             val actual =  repository.getBackpack()
-            assertEquals(daoPokemon.name, actual.getOrNull()?.get(0)?.name)
+            assertEquals(daoPokemon.name, actual.firstOrNull()?.get(0)?.name)
         }
     }
 
