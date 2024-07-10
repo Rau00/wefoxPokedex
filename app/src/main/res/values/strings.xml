@@ -14,10 +14,10 @@
     <string name="hunt_Search">Search pokemon</string>
 
     <!-- Detail Screen -->
-    <string name="detail_height">Height: </string>
-    <string name="detail_weight">Weight: </string>
-    <string name="detail_catched">Caught: </string>
-    <string name="detail_experience">Experience: </string>
-    <string name="detail_type">Type: </string>
+    <string name="detail_height">Height </string>
+    <string name="detail_weight">Weight </string>
+    <string name="detail_catched">Caught </string>
+    <string name="detail_experience">Experience </string>
+    <string name="detail_type">Type </string>
 
 </resources>

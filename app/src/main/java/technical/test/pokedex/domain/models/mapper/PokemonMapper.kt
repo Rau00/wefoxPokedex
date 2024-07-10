@@ -24,7 +24,6 @@ fun PokemonModel.toEntity(): PokemonEntity =
         height = height,
         order = order,
         sprites = sprite,
-        dateCaught = dateCaught,
         baseExperience = baseExperience,
         types = types
     )
