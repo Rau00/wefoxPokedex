@@ -1,4 +1,4 @@
-package technical.test.pokedex.ui.backpack.view
+package technical.test.pokedex.ui.backpack
 
 import android.app.Activity
 import androidx.compose.foundation.clickable
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -27,17 +26,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
-import technical.test.pokedex.ui.backpack.viewmodel.BackpackViewModel
 import technical.test.pokedex.ui.components.AlertDialog
 import technical.test.pokedex.ui.components.Loading
 
 @Composable
-fun BackpackView(viewModel: BackpackViewModel = hiltViewModel()) {
+fun BackpackView(
+    viewModel: BackpackViewModel,
+    navigateToDetail: (Int) -> Unit,
+    navigateToHunting: () -> Unit) {
 
     val backpackResult by viewModel.pokemonBackpackResult.collectAsState()
     var isShowEmptyBackpackDialog by remember { mutableStateOf(false) }
@@ -59,8 +59,8 @@ fun BackpackView(viewModel: BackpackViewModel = hiltViewModel()) {
         is PokemonViewStates.PokemonCaughtList -> {
             BackpackFilled(
                 pokemonList = (backpackResult as PokemonViewStates.PokemonCaughtList).pokemonCaughtList,
-                pokemonItemAction = { viewModel.seePokemonDetail(activity, it) },
-                catchPokemonAction = { viewModel.goHunting(activity) },
+                pokemonItemAction = { navigateToDetail(it.id) },
+                catchPokemonAction = { navigateToHunting() },
                 sortAlphabeticalAction = { viewModel.sortAlphabetical() })
         }
 
@@ -78,7 +78,7 @@ fun BackpackView(viewModel: BackpackViewModel = hiltViewModel()) {
             dialogText = stringResource(id = R.string.message_backpack_empty),
             confirmButtonText = stringResource(id = R.string.positive_backpack_empty),
             dismissButtonText = stringResource(id = R.string.negative_backpack_empty),
-            onConfirmation = { viewModel.goHunting(activity) },
+            onConfirmation = { navigateToHunting() },
             onDismissRequest = { isShowEmptyBackpackDialog = false }
         )
     }

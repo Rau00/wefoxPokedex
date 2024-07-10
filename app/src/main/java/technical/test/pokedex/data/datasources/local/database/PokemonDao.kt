@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
-import technical.test.pokedex.utils.constans.Constants
+import technical.test.pokedex.Constants
 
 @Dao
 interface PokemonDao {

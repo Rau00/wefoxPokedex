@@ -1,6 +1,5 @@
-package technical.test.pokedex.ui.pokemonhunter.viewmodel
+package technical.test.pokedex.ui.pokemonhunter
 
-import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
