@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import technical.test.pokedex.utils.constans.Constants
+import technical.test.pokedex.Constants
 import java.util.concurrent.TimeUnit
 
 interface ApiService {

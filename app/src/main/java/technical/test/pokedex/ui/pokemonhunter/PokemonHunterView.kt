@@ -1,6 +1,5 @@
-package technical.test.pokedex.ui.pokemonhunter.view
+package technical.test.pokedex.ui.pokemonhunter
 
-import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,25 +17,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.ui.components.Loading
-import technical.test.pokedex.ui.pokemonhunter.viewmodel.PokemonHunterViewModel
 
 @Composable
-fun PokemonHunterView(viewModel: PokemonHunterViewModel = hiltViewModel()) {
+fun PokemonHunterView(
+    viewModel: PokemonHunterViewModel,
+    leaveAction: () -> Unit) {
 
     val pokemonFound by viewModel.pokemonFound.collectAsState()
-
-    val activity = LocalContext.current as Activity
 
     when (pokemonFound) {
         PokemonViewStates.Idle -> {
@@ -57,7 +53,7 @@ fun PokemonHunterView(viewModel: PokemonHunterViewModel = hiltViewModel()) {
             PokemonFounded((pokemonFound as PokemonViewStates.PokemonFounded).pokemonFunded,
                 viewModel.isCaught,
                 catchAction = { viewModel.catchPokemon() },
-                leaveAction = { activity.finish() },
+                leaveAction = { leaveAction() },
                 searchAction = { viewModel.searchPokemon() })
         }
 

@@ -2,7 +2,7 @@ package technical.test.pokedex.data.datasources.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import technical.test.pokedex.utils.constans.Constants
+import technical.test.pokedex.Constants
 import java.util.Calendar
 
 

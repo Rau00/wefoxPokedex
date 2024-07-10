@@ -19,7 +19,7 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="technical.test.pokedex.ui.backpack.view.MainActivity"
+                android:name="technical.test.pokedex.ui.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar"
                 android:exported="true">

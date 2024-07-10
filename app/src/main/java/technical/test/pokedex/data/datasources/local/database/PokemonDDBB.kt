@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
 import technical.test.pokedex.data.datasources.local.database.converters.PokemonDaoConverter
-import technical.test.pokedex.utils.constans.Constants
+import technical.test.pokedex.Constants
 
 @Database(entities = [PokemonEntity::class], version = 1)
 @TypeConverters(PokemonDaoConverter::class)

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinkapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -65,8 +66,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.material3)
-
-    implementation ("androidx.fragment:fragment-ktx:1.6.1") // will be change by compose
+    implementation(libs.androidx.compose.navigation)
 
     //Testing
     testImplementation (libs.testing.junit)
@@ -78,7 +78,6 @@ dependencies {
     testImplementation (libs.testing.kotlin.coroutines)
 
     //Image Download
-    implementation ("com.github.bumptech.glide:glide:4.13.0") // will be change by coil
     implementation(libs.coil)
 
     // Kotlin coroutines
@@ -88,6 +87,8 @@ dependencies {
     implementation (libs.retrofit)
     // Gson
     implementation("com.google.code.gson:gson:2.10.1") // will be change by kotlin serialization
+    // Kotlin serialization
+    implementation(libs.kotlinx.serialization.json)
     // okhttp
     implementation (libs.okhttp.loggin.interceptor)
     implementation (libs.okhttp)

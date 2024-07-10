@@ -1,4 +1,4 @@
-package technical.test.pokedex.ui.pokemondetail.view
+package technical.test.pokedex.ui.pokemondetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

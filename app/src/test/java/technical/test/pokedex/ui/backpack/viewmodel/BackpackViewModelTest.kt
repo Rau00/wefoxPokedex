@@ -3,19 +3,18 @@ package technical.test.pokedex.ui.backpack.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import technical.test.pokedex.CoroutinesTestRule
 import technical.test.pokedex.domain.GetBackpackUseCase
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
+import technical.test.pokedex.ui.backpack.BackpackViewModel
 
 class BackpackViewModelTest {
 

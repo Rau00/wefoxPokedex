@@ -1,4 +1,4 @@
-package technical.test.pokedex.utils.constans
+package technical.test.pokedex
 
 object Constants {
 

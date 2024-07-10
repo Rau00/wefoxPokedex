@@ -1,11 +1,9 @@
 package technical.test.pokedex.ui.pokemonhunter.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -21,6 +19,7 @@ import technical.test.pokedex.domain.PokemonCaughtUseCase
 import technical.test.pokedex.domain.SearchPokemonUseCase
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
+import technical.test.pokedex.ui.pokemonhunter.PokemonHunterViewModel
 
 class PokemonHunterViewModelImplTest {
     @get:Rule

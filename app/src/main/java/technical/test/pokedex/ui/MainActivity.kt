@@ -1,9 +1,10 @@
-package technical.test.pokedex.ui.backpack.view
+package technical.test.pokedex.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import technical.test.pokedex.ui.router.PokemonNavHost
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BackpackView()
+            PokemonNavHost()
         }
     }
 }

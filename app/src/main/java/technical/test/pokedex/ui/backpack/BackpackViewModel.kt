@@ -1,4 +1,4 @@
-package technical.test.pokedex.ui.backpack.viewmodel
+package technical.test.pokedex.ui.backpack
 
 import android.app.Activity
 import androidx.compose.runtime.mutableStateListOf
@@ -12,8 +12,6 @@ import kotlinx.coroutines.launch
 import technical.test.pokedex.domain.GetBackpackUseCase
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
-import technical.test.pokedex.ui.backpack.router.BackpackRouter
-import technical.test.pokedex.ui.backpack.router.BackpackRouterImpl
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,14 +41,6 @@ class BackpackViewModel @Inject constructor(private val getBackpackUseCase: GetB
                     }
                 }
         }
-    }
-
-    fun goHunting(activity: Activity) {
-        BackpackRouterImpl.goHunting(activity)
-    }
-
-    fun seePokemonDetail(activity: Activity, pokemon: PokemonModel) {
-        BackpackRouterImpl.seePokemonDetail(activity, pokemon)
     }
 
     fun sortAlphabetical() {
