@@ -1,4 +1,4 @@
-package technical.test.pokedex.ui.router
+package technical.test.pokedex.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel

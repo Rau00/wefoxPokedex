@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import technical.test.pokedex.ui.router.PokemonNavHost
+import technical.test.pokedex.ui.navigation.PokemonNavHost
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

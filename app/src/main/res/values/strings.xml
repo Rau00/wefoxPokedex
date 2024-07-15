@@ -20,4 +20,9 @@
     <string name="detail_experience">Experience </string>
     <string name="detail_type">Type </string>
 
+
+    <string name="generation">Generation </string>
+
+
+
 </resources>

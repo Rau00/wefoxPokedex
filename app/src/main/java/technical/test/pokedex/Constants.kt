@@ -16,6 +16,7 @@ object Constants {
          * NAME PERSISTENCE TABLE
          */
         const val PERSISTENCE_TABLE = "pokedex_table"
+        const val PERSISTENCE_STATS_TABLE = "pokedex_stats_table"
 
         /**
          * FORMAT TIME

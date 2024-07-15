@@ -2,6 +2,7 @@ package technical.test.pokedex.ui.pokemonhunter
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +29,7 @@ import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
 import technical.test.pokedex.ui.components.Loading
+import technical.test.pokedex.ui.components.PokemonStatsView
 
 @Composable
 fun PokemonHunterView(
@@ -69,34 +73,50 @@ private fun PokemonFounded(
     leaveAction: () -> Unit,
     searchAction: () -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.Center
     ) {
-
-        AsyncImage(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.margin_md)),
-            model = pokemon.sprite,
-            contentDescription = null
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.margin_md)),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "${stringResource(id = R.string.hunt_weight)} ${pokemon.weight}")
-            Text(text = pokemon.name,
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.margin_md)),
+                model = pokemon.sprite,
+                contentDescription = null
             )
-            Text(text = "${stringResource(id = R.string.hunt_height)} ${pokemon.height}")
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.margin_s))) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimensionResource(id = R.dimen.margin_md)),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = "${stringResource(id = R.string.hunt_weight)} ${pokemon.weight}")
+                    Text(
+                        text = pokemon.name,
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                    )
+                    Text(text = "${stringResource(id = R.string.hunt_height)} ${pokemon.height}")
+                }
+                Text(
+                    text = "${stringResource(id = R.string.generation)}: ${pokemon.calculateGeneration()}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                PokemonStatsView(pokemonStats = pokemon.stats)
+            }
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.BottomCenter)
                 .padding(dimensionResource(id = R.dimen.margin_md)),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
@@ -135,11 +155,16 @@ private fun PokemonFounded(
 @Composable
 private fun ErrorDataFound(errorMessage: String, buttonAction: () -> Unit) {
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.margin_md)),
+    ) {
         Text(text = errorMessage)
         Button(
             onClick = { buttonAction() },
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
             Text(stringResource(id = R.string.hunt_Search))
         }
