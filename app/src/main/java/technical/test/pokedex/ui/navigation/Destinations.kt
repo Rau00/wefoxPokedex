@@ -1,7 +1,6 @@
-package technical.test.pokedex.ui.router
+package technical.test.pokedex.ui.navigation
 
 import kotlinx.serialization.Serializable
-import technical.test.pokedex.domain.models.PokemonModel
 
 interface Route
 

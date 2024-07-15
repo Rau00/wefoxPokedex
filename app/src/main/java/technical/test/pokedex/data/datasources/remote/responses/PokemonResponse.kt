@@ -11,7 +11,8 @@ data class PokemonResponse(
     val sprites: PokemonSpritesResponse,
     @SerializedName("base_experience")
     val baseExperience: Int,
-    val types: List<PokemonTypeResponse>
+    val types: List<PokemonTypeResponse>,
+    val stats: List<PokemonStatsResponse>
 )
 
 data class PokemonSpritesResponse(
@@ -22,3 +23,15 @@ data class PokemonSpritesResponse(
 data class PokemonTypeResponse(val type: PokemonTypeNameResponse)
 
 data class PokemonTypeNameResponse(val name: String)
+
+data class PokemonStatsResponse(
+    @SerializedName("base_stat")
+    val baseStat: Int,
+    val effort: Int,
+    val stat: StatsResponse
+)
+
+data class StatsResponse(
+    val name: String,
+    val url: String
+)
