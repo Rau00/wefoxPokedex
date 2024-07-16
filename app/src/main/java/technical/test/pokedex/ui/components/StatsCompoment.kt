@@ -13,7 +13,6 @@ import technical.test.pokedex.domain.models.PokemonStats
 @Composable
 fun PokemonStatsView(pokemonStats: List<PokemonStats>) {
     Column(
-        modifier = Modifier.padding(dimensionResource(id = R.dimen.margin_md)),
         horizontalAlignment = Alignment.Start
     ) {
         pokemonStats.forEach {

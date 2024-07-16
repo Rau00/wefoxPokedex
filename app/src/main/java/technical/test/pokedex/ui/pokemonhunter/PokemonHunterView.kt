@@ -1,5 +1,6 @@
 package technical.test.pokedex.ui.pokemonhunter
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -73,6 +75,7 @@ private fun PokemonFounded(
     leaveAction: () -> Unit,
     searchAction: () -> Unit
 ) {
+    val activity = LocalContext.current as Activity
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -90,23 +93,30 @@ private fun PokemonFounded(
                 contentDescription = null
             )
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
+                modifier = Modifier.verticalScroll(rememberScrollState())
+                    .padding(dimensionResource(id = R.dimen.margin_md)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.margin_s))) {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.margin_md)),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = "${stringResource(id = R.string.hunt_weight)} ${pokemon.weight}")
                     Text(
-                        text = pokemon.name,
+                        text = "${pokemon.name}(${pokemon.order})",
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                     Text(text = "${stringResource(id = R.string.hunt_height)} ${pokemon.height}")
                 }
                 Text(
                     text = "${stringResource(id = R.string.generation)}: ${pokemon.calculateGeneration()}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Text(
+                    text =
+                    "${stringResource(id = R.string.win_probability)}: ${pokemon
+                        .getVictoryProbability(activity)}",
                     modifier = Modifier
                         .fillMaxWidth()
                 )
