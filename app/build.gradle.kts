@@ -93,6 +93,10 @@ dependencies {
     implementation (libs.okhttp.loggin.interceptor)
     implementation (libs.okhttp)
 
+    // Tensorflow
+    implementation(libs.tensorflowlite)
+    implementation(libs.tensorflowlite.gpu)
+
     // Hilt for Kotlin
     implementation (libs.hilt.android)
     implementation (libs.hilt.compose)

@@ -13,13 +13,12 @@ class PokemonDetailsViewModel @Inject constructor(
     private val getBackpackUseCase: GetBackpackUseCase
 ) : ViewModel() {
 
-        fun getPokemonDetails(pokemonId: String): PokemonModel? {
-            var pokemon: PokemonModel? = null
-            runBlocking {
-                val pokemonList = getBackpackUseCase().first()
-                pokemon = pokemonList.find { it.id == pokemonId.toInt() }
-            }
-            return pokemon
+    fun getPokemonDetails(pokemonId: String): PokemonModel? {
+        var pokemon: PokemonModel? = null
+        runBlocking {
+            val pokemonList = getBackpackUseCase().first()
+            pokemon = pokemonList.find { it.id == pokemonId.toInt() }
         }
-
+        return pokemon
+    }
 }

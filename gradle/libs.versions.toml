@@ -25,10 +25,11 @@ lifecycleExtensions = "2.2.0"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 composeRuntime = "1.6.8"
-navigationCompose = "2.8.0-beta04"
+navigationCompose = "2.8.0-beta05"
 kotlinCompilerExtVersion = "1.5.13"
 coil = "2.6.0"
 kotlinxSerializationJson = "1.6.3"
+tensorflowLite = "2.16.1"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin"}
@@ -71,6 +72,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "composeRuntime" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+tensorflowlite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite"}
+tensorflowlite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLite"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

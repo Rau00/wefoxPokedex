@@ -1,7 +1,9 @@
 package technical.test.pokedex.domain.models
 
+import android.app.Activity
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import technical.test.pokedex.ai.PokemonAI
 
 @Parcelize
 data class PokemonModel(
@@ -28,6 +30,22 @@ data class PokemonModel(
             order in 810..898 -> 8
             else -> 0
         }
+    }
+
+    fun getVictoryProbability(activity: Activity): Float {
+        val pokemonAI = PokemonAI(activity)
+        val inputModelPreprocessed= pokemonAI.floatArrayToBuffer(floatArrayOf(
+            stats[0].baseStat.toFloat(),
+            stats[1].baseStat.toFloat(),
+            stats[2].baseStat.toFloat(),
+            stats[3].baseStat.toFloat(),
+            stats[4].baseStat.toFloat(),
+            stats[5].baseStat.toFloat(),
+            calculateGeneration().toFloat()))
+
+        val victoryProbability = pokemonAI.predict(inputModelPreprocessed)
+
+        return victoryProbability
     }
 }
 
