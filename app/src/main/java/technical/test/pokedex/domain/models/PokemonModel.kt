@@ -27,7 +27,8 @@ data class PokemonModel(
             order in 494..649 -> 5
             order in 650..721 -> 6
             order in 722..809 -> 7
-            order in 810..898 -> 8
+            order in 810..905 -> 8
+            order in 906..1026 -> 9
             else -> 0
         }
     }
