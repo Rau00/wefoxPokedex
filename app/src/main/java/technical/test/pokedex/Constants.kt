@@ -22,4 +22,9 @@ object Constants {
          * FORMAT TIME
          */
         const val FORMAT_TIME = "dd/M/yyyy hh:mm:ss"
+
+        /**
+         * AI MODEL PATH
+         */
+        const val MODEL_PATH = "modelo_pokemon.tflite"
 }

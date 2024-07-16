@@ -1,5 +1,6 @@
 package technical.test.pokedex.ui.pokemondetail
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +27,8 @@ import technical.test.pokedex.ui.components.PokemonStatsView
 
 @Composable
 fun PokemonDetailView(pokemon: PokemonModel) {
+
+    val activity = LocalContext.current as Activity
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +54,7 @@ fun PokemonDetailView(pokemon: PokemonModel) {
                         text = "${stringResource(id = R.string.detail_weight)}: ${pokemon.weight}",
                     )
                     Text(
-                        text = pokemon.name,
+                        text = "${pokemon.name}(${pokemon.id})",
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                     )
                     Text(
@@ -72,6 +76,12 @@ fun PokemonDetailView(pokemon: PokemonModel) {
 
                 Text(
                     text = "${stringResource(id = R.string.generation)}: ${pokemon.calculateGeneration()}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
+                Text(
+                    text = "${stringResource(id = R.string.win_probability)}: ${pokemon.getVictoryProbability(activity)}",
                     modifier = Modifier
                         .fillMaxWidth()
                 )
