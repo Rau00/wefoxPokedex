@@ -54,7 +54,7 @@ fun PokemonDetailView(pokemon: PokemonModel) {
                         text = "${stringResource(id = R.string.detail_weight)}: ${pokemon.weight}",
                     )
                     Text(
-                        text = "${pokemon.name}(${pokemon.order})",
+                        text = "${pokemon.name}(${pokemon.id})",
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                     )
                     Text(

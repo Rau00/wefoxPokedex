@@ -103,7 +103,7 @@ private fun PokemonFounded(
                 ) {
                     Text(text = "${stringResource(id = R.string.hunt_weight)} ${pokemon.weight}")
                     Text(
-                        text = "${pokemon.name}(${pokemon.order})",
+                        text = "${pokemon.name}(${pokemon.id})",
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                     Text(text = "${stringResource(id = R.string.hunt_height)} ${pokemon.height}")

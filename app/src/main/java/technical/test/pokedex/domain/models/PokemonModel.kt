@@ -19,16 +19,16 @@ data class PokemonModel(
     val stats: List<PokemonStats>
 ): Parcelable {
     fun calculateGeneration(): Int {
-        return when {
-            order in 1..151 -> 1
-            order in 152..251 -> 2
-            order in 252..386 -> 3
-            order in 387..493 -> 4
-            order in 494..649 -> 5
-            order in 650..721 -> 6
-            order in 722..809 -> 7
-            order in 810..905 -> 8
-            order in 906..1026 -> 9
+        return when(id) {
+            in 1..151 -> 1
+            in 152..251 -> 2
+            in 252..386 -> 3
+            in 387..493 -> 4
+            in 494..649 -> 5
+            in 650..721 -> 6
+            in 722..809 -> 7
+            in 810..905 -> 8
+            in 906..1026 -> 9
             else -> 0
         }
     }
