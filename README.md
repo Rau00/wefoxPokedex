@@ -31,8 +31,20 @@ Technologies:
 
 - ~~Koin~~ Hilt -> Dependencies injection
 
-- JUnit: Testing
+- Testing:
+  - Unit test
+  - Compose UI test
+  - Screenshot testing
 
+Commands for Screenshot testing:
+
+- Generate reference image
+        Linux y macOS: ./gradlew updateDebugScreenshotTest (./gradlew {:module:}update{Variant}ScreenshotTest)
+        Windows: gradlew updateDebugScreenshotTest (gradlew {:module:}update{Variant}ScreenshotTest)
+
+- Validate screen
+        Linux y macOS: ./gradlew validateDebugScreenshotTest (./gradlew {:module:}validate{Variant}ScreenshotTest)
+        Windows: gradlew validateDebugScreenshotTest (gradlew {:module:}validate{Variant}ScreenshotTest)
 
 
 About de architecture it's define by:
@@ -48,3 +60,7 @@ About de architecture it's define by:
  - View:
     - Layer that present de information to the user's
 
+
+Known issues:
+- Due to the implementation of screenshot testing, 
+    the PokemonHunterView could be improve, avoiding pass the viewModel as parameter

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,10 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
+import technical.test.pokedex.Constants.POKEMON_DETAIL_GENERATION_ID
+import technical.test.pokedex.Constants.POKEMON_DETAIL_IMAGE_ID
+import technical.test.pokedex.Constants.POKEMON_DETAIL_WIN_PROBABILITY_ID
 import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.components.PokemonStatsView
@@ -35,7 +40,10 @@ fun PokemonDetailView(pokemon: PokemonModel) {
             .background(Color.White)
     ) {
         AsyncImage(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .testTag(POKEMON_DETAIL_IMAGE_ID)
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.pokemon_detail_image_size)),
             model = pokemon.sprite, contentDescription = null
         )
 
@@ -77,12 +85,14 @@ fun PokemonDetailView(pokemon: PokemonModel) {
                 Text(
                     text = "${stringResource(id = R.string.generation)}: ${pokemon.calculateGeneration()}",
                     modifier = Modifier
+                        .testTag(POKEMON_DETAIL_GENERATION_ID)
                         .fillMaxWidth()
                 )
 
                 Text(
                     text = "${stringResource(id = R.string.win_probability)}: ${pokemon.getVictoryProbability(activity)}",
                     modifier = Modifier
+                        .testTag(POKEMON_DETAIL_WIN_PROBABILITY_ID)
                         .fillMaxWidth()
                 )
 

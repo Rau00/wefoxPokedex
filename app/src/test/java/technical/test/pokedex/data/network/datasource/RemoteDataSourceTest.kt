@@ -46,7 +46,8 @@ class RemoteDataSourceTest {
             val type = listOf(PokemonTypeResponse(PokemonTypeNameResponse("planta")))
             pokemonDefined =
                 PokemonResponse(0, "pikachu", 7, 40, 12,
-                    PokemonSpritesResponse("urlImage"),5, type)
+                    PokemonSpritesResponse("urlImage"),5, type, listOf()
+                )
             whenever(service.fetchPokemon(any())).thenReturn(pokemonDefined)
             dataSource = RemotePokemonDataSource(service)
         }

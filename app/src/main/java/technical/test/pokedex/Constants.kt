@@ -27,4 +27,17 @@ object Constants {
          * AI MODEL PATH
          */
         const val MODEL_PATH = "modelo_pokemon.tflite"
+
+        /**
+         * TESTING IDs
+         */
+        const val POKEMON_LIST_ID = "pokemonListId"
+        const val POKEMON_LIST_ITEM_ID = "pokemonListItemId"
+
+        const val POKEMON_STATS_ID = "pokemonDetailStatsId"
+
+        const val POKEMON_DETAIL_IMAGE_ID = "pokemonDetailImageId"
+        const val POKEMON_DETAIL_WIN_PROBABILITY_ID = "pokemonDetailWinProbabilityId"
+        const val POKEMON_DETAIL_GENERATION_ID = "pokemonDetailGenerationId"
+
 }
