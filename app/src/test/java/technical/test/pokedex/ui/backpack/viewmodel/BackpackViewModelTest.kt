@@ -37,7 +37,7 @@ class BackpackViewModelTest {
     private var pokemonModel = PokemonModel(
     1, "bulbasur",
     2, 3, 4, "urlImageDAO",
-    "lunes", 5, type
+    "lunes", 5, type, listOf()
     )
     private val pokemonList = SnapshotStateList<PokemonModel>()
 

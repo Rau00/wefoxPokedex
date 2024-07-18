@@ -15,12 +15,15 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import technical.test.pokedex.data.datasources.local.PokemonLocalDataSource
 import technical.test.pokedex.data.datasources.local.entities.PokemonEntity
+import technical.test.pokedex.data.datasources.local.entities.PokemonStatEntity
 import technical.test.pokedex.data.datasources.remote.RemoteDataSource
 import technical.test.pokedex.data.datasources.remote.network.exceptions.RemoteDataNotFoundException
 import technical.test.pokedex.data.datasources.remote.responses.PokemonResponse
 import technical.test.pokedex.data.datasources.remote.responses.PokemonSpritesResponse
+import technical.test.pokedex.data.datasources.remote.responses.PokemonStatsResponse
 import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeNameResponse
 import technical.test.pokedex.data.datasources.remote.responses.PokemonTypeResponse
+import technical.test.pokedex.data.datasources.remote.responses.StatsResponse
 import technical.test.pokedex.domain.models.mapper.toModel
 
 class PokemonRepositoryImplTest {
@@ -47,9 +50,22 @@ class PokemonRepositoryImplTest {
             val typeRemote = listOf(PokemonTypeResponse(PokemonTypeNameResponse("electrico")))
             val typeDao = listOf("planta")
             remotePokemon = PokemonResponse(0, "pikachu", 7, 40, 12,
-                PokemonSpritesResponse("urlImageAPI"), 34, typeRemote)
+                PokemonSpritesResponse("urlImageAPI"), 34, typeRemote,
+                stats = listOf(
+                    PokemonStatsResponse(
+                        baseStat = 40,
+                        effort = 0,
+                        stat = StatsResponse(name = "attack", url = "")
+                    )
+                ))
             daoPokemon = PokemonEntity(1, "bulbasur", 2, 3, 4,
-                "urlImageDAO", "martes", 123, typeDao)
+                "urlImageDAO", "martes", 123, typeDao,
+                stats = listOf(
+                    PokemonStatEntity(
+                        baseStat = 40,
+                        name = "attack"
+                    )
+                ))
 
             whenever(remoteDataSource.getPokemon(any())).thenReturn(Result.success(remotePokemon))
             val pokemonList = mutableListOf<PokemonEntity>()

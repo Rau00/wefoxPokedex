@@ -47,7 +47,7 @@ class PokemonHunterViewModelImplTest {
             pokemonModel = PokemonModel(
                 1, "bulbasur",
                 2, 3, 4, "urlImageDAO",
-                "lunes", 5, listOf("planta")
+                "lunes", 5, listOf("planta"), listOf()
             )
 
             val pokemonList = mutableListOf<PokemonModel>()

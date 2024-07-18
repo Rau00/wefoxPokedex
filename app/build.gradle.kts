@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinparcelize)
-    alias(libs.plugins.kotlinkapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinSerialization)
@@ -10,19 +9,22 @@ plugins {
 
 android {
     namespace = "technical.test.pokedex"
-    compileSdk  = 34
+    compileSdk = 34
     defaultConfig {
         applicationId = "technical.test.pokedex"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "technical.test.pokedex.CustomTestRunner"
     }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles( getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     testOptions {
@@ -50,66 +52,64 @@ android {
 }
 
 dependencies {
-    implementation (libs.kotlin.stdlib)
-    implementation (libs.androidx.appcompact)
-    implementation (libs.androidx.core)
-    implementation (libs.androidx.constraintlayout)
-    implementation (libs.android.material)
-    implementation (libs.androidx.lifecycle.extensions)
-    implementation (libs.androidx.lifecycle.viewmodel)
-    implementation (libs.androidx.lifecycle.runtime)
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.androidx.appcompact)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.android.material)
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.runtime)
 
     // Compose
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.navigation)
-
-    //Testing
-    testImplementation (libs.testing.junit)
-    androidTestImplementation (libs.testing.androidx.runner)
-    androidTestImplementation (libs.testing.espresso)
-    testImplementation (libs.testing.androidx.arch.core)
-    testImplementation(libs.testing.mockito.inline)
-    testImplementation(libs.testing.mockito.kotlin)
-    testImplementation (libs.testing.kotlin.coroutines)
 
     //Image Download
     implementation(libs.coil)
 
     // Kotlin coroutines
-    implementation (libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines)
     // Retrofit
     implementation(libs.retrofit.gson)
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     // Gson
     implementation("com.google.code.gson:gson:2.10.1") // will be change by kotlin serialization
     // Kotlin serialization
     implementation(libs.kotlinx.serialization.json)
     // okhttp
-    implementation (libs.okhttp.loggin.interceptor)
-    implementation (libs.okhttp)
+    implementation(libs.okhttp.loggin.interceptor)
+    implementation(libs.okhttp)
 
     // Tensorflow
     implementation(libs.tensorflowlite)
     implementation(libs.tensorflowlite.gpu)
 
     // Hilt for Kotlin
-    implementation (libs.hilt.android)
-    implementation (libs.hilt.compose)
-    kapt (libs.hilt.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.compose)
+    ksp(libs.hilt.compiler)
 
     //Room, data persistence
-    implementation (libs.room.runtime)
-    implementation (libs.room.ktx)
-    ksp (libs.room.compiler)
-    androidTestImplementation (libs.room.testing)
-}
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    androidTestImplementation(libs.room.testing)
 
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
+    //Testing
+    androidTestImplementation(libs.testing.androidx.runner)
+    androidTestImplementation(libs.testing.mockito.kotlin)
+    androidTestImplementation(libs.hilt.testing)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.core)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation(libs.testing.junit)
+    testImplementation(libs.testing.androidx.arch.core)
+    testImplementation(libs.testing.mockito.inline)
+    testImplementation(libs.testing.mockito.kotlin)
+    testImplementation(libs.testing.kotlin.coroutines)
 }

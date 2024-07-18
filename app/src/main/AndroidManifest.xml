@@ -12,12 +12,6 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="technical.test.pokedex.ui.pokemondetail.view.PokemonDetailActivity"
-                android:exported="false">
-        </activity>
-        <activity android:name="technical.test.pokedex.ui.pokemonhunter.view.PokemonHunterActivity"
-                android:exported="false">
-        </activity>
         <activity
                 android:name="technical.test.pokedex.ui.MainActivity"
                 android:label="@string/app_name"
@@ -29,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="technical.test.pokedex.HiltTestActivity"
+            android:exported="false">
+        </activity>
+
     </application>
 
 </manifest>

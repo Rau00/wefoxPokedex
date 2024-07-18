@@ -8,7 +8,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 
-class PokemonAI(private val activity: Activity) {
+class PokemonAI(activity: Activity) {
 
     private val tfLiteInterpreter: Interpreter = Interpreter(activity.getAIModel(MODEL_PATH))
 

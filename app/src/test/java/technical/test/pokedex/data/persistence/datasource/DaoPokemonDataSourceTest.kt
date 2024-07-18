@@ -37,7 +37,7 @@ class DaoPokemonDataSourceTest {
             val type = listOf("planta")
             daoPokemon =
                 PokemonEntity(0, "pikachu", 7, 40, 12,
-                    "urlImage", "lunes", 4, type)
+                    "urlImage", "lunes", 4, type, listOf())
             val pokemonList = mutableListOf<PokemonEntity>()
             pokemonList.add(daoPokemon)
             whenever(dao.getAllPokemon()).thenReturn(MutableStateFlow(pokemonList))

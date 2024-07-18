@@ -1,6 +1,5 @@
 package technical.test.pokedex.ui.backpack
 
-import android.app.Activity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -22,11 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
+import technical.test.pokedex.Constants.POKEMON_LIST_ID
+import technical.test.pokedex.Constants.POKEMON_LIST_ITEM_ID
 import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
@@ -41,7 +42,6 @@ fun BackpackView(
 
     val backpackResult by viewModel.pokemonBackpackResult.collectAsState()
     var isShowEmptyBackpackDialog by remember { mutableStateOf(false) }
-    val activity = LocalContext.current as Activity
 
     LaunchedEffect(true) {
         viewModel.updateBackpack()
@@ -99,6 +99,7 @@ private fun BackpackFilled(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .testTag(POKEMON_LIST_ID)
         ) {
             items(pokemonList.size) { index ->
                 PokemonItem(pokemonList[index], pokemonItemAction)
@@ -131,6 +132,7 @@ private fun BackpackFilled(
 private fun PokemonItem(pokemon: PokemonModel, pokemonItemAction: (PokemonModel) -> Unit) {
     Row(
         modifier = Modifier
+            .testTag(POKEMON_LIST_ITEM_ID)
             .clickable {
                 pokemonItemAction(pokemon)
             },
