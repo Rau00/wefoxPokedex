@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.screenshot)
 }
 
 android {
@@ -27,6 +28,8 @@ android {
             )
         }
     }
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+
     testOptions {
         unitTests {
             isReturnDefaultValues = true
@@ -65,6 +68,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
+    screenshotTestImplementation(libs.androidx.ui.tooling)
+    screenshotTestImplementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.navigation)
 
@@ -72,7 +77,10 @@ dependencies {
     implementation(libs.coil)
 
     // Kotlin coroutines
-    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.kotlin.coroutines.android)
+    screenshotTestImplementation(libs.kotlin.coroutines.core)
+    screenshotTestImplementation(libs.kotlin.coroutines.android)
     // Retrofit
     implementation(libs.retrofit.gson)
     implementation(libs.retrofit)

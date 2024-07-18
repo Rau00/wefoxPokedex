@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -68,14 +69,14 @@ fun PokemonHunterView(
 }
 
 @Composable
-private fun PokemonFounded(
+fun PokemonFounded(
     pokemon: PokemonModel,
     pokemonCaught: Boolean,
     catchAction: () -> Unit,
     leaveAction: () -> Unit,
     searchAction: () -> Unit
 ) {
-    val activity = LocalContext.current as Activity
+    val activity = LocalContext.current as? Activity
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -88,12 +89,14 @@ private fun PokemonFounded(
             AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(dimensionResource(id = R.dimen.pokemon_detail_image_size))
                     .padding(dimensionResource(id = R.dimen.margin_md)),
                 model = pokemon.sprite,
                 contentDescription = null
             )
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .padding(dimensionResource(id = R.dimen.margin_md)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.margin_s))) {
                 Row(
@@ -113,13 +116,17 @@ private fun PokemonFounded(
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-                Text(
-                    text =
-                    "${stringResource(id = R.string.win_probability)}: ${pokemon
-                        .getVictoryProbability(activity)}",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
+                activity?.let {
+                    Text(
+                        text =
+                        "${stringResource(id = R.string.win_probability)}: ${
+                            pokemon
+                                .getVictoryProbability(activity)
+                        }",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
                 PokemonStatsView(pokemonStats = pokemon.stats)
             }
         }
@@ -179,5 +186,4 @@ private fun ErrorDataFound(errorMessage: String, buttonAction: () -> Unit) {
             Text(stringResource(id = R.string.hunt_Search))
         }
     }
-
 }
