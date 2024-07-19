@@ -36,14 +36,14 @@ data class PokemonModel(
 
     fun getVictoryProbability(activity: Activity): Float {
         val pokemonAI = PokemonAI(activity)
-        val inputModelPreprocessed= pokemonAI.floatArrayToBuffer(floatArrayOf(
+        val inputModelPreprocessed = floatArrayOf(
             stats[0].baseStat.toFloat(),
             stats[1].baseStat.toFloat(),
             stats[2].baseStat.toFloat(),
             stats[3].baseStat.toFloat(),
             stats[4].baseStat.toFloat(),
             stats[5].baseStat.toFloat(),
-            calculateGeneration().toFloat()))
+            calculateGeneration().toFloat())
 
         val victoryProbability = pokemonAI.predict(inputModelPreprocessed)
 

@@ -94,7 +94,6 @@ dependencies {
 
     // Tensorflow
     implementation(libs.tensorflowlite)
-    implementation(libs.tensorflowlite.gpu)
 
     // Hilt for Kotlin
     implementation(libs.hilt.android)
