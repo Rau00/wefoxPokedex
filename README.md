@@ -11,7 +11,7 @@ Branch Policy -> Git Flow
 
 Technologies:
 
-- Artificial intelligent:
+- Artificial intelligence:
   - It was integrate a custom TENSOR FLOW LITE model, that calculate the probability of victory of each pokemon
 
 - UI
