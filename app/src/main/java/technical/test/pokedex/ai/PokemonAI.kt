@@ -12,22 +12,9 @@ class PokemonAI(activity: Activity) {
 
     private val tfLiteInterpreter: Interpreter = Interpreter(activity.getAIModel(MODEL_PATH))
 
-    fun predict(input: FloatBuffer): Float {
+    fun predict(input: FloatArray): Float {
         val output = Array(1) { FloatArray(1) }
         tfLiteInterpreter.run(input, output)
         return output[0][0]
-    }
-
-    fun floatArrayToBuffer(floatArray: FloatArray): FloatBuffer {
-        val byteBuffer: ByteBuffer = ByteBuffer
-            .allocateDirect(floatArray.size * 4)
-
-        byteBuffer.order(ByteOrder.nativeOrder())
-
-        val floatBuffer: FloatBuffer = byteBuffer.asFloatBuffer()
-
-        floatBuffer.put(floatArray)
-        floatBuffer.position(0)
-        return floatBuffer
     }
 }
