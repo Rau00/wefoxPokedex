@@ -16,7 +16,8 @@ data class PokemonModel(
     val dateCaught: String = "",
     val baseExperience: Int,
     val types: List<String>,
-    val stats: List<PokemonStats>
+    val stats: List<PokemonStats>,
+    var isCaught: Boolean = false
 ): Parcelable {
     fun calculateGeneration(): Int {
         return when(id) {

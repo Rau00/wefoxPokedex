@@ -2,7 +2,9 @@
 
 Architecture:
 - Clean Architecture
-- MVVM
+- MVVM -> Backpack and pokemon details features
+- MVI -> Pokemon hunter feature
+
 Language -> Kotlin
 
 Branch Policy -> Git Flow
@@ -34,7 +36,7 @@ Technologies:
 - Testing:
   - Unit test
   - Compose UI test
-  - Screenshot testing
+  - Screenshot testing -> supported by androidx
 
 Commands for Screenshot testing:
 
@@ -55,12 +57,10 @@ About de architecture it's define by:
     - It's to Centralizer all datasource
     
  - ViewModel:
-    - It's like a presenter, it have de observables values and the business Logic of the functionality
-    
+    - It's like a presenter, it have de observables values and the business Logic of the functionality.
+    - Handle the intents in MVI part.
+   
  - View:
     - Layer that present de information to the user's
 
-
-Known issues:
-- Due to the implementation of screenshot testing, 
-    the PokemonHunterView could be improve, avoiding pass the viewModel as parameter
+ 
