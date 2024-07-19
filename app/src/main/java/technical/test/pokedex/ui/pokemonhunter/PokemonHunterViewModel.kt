@@ -19,26 +19,32 @@ class PokemonHunterViewModel @Inject constructor(
     private val getBackpackUseCase: GetBackpackUseCase,
     private val searchPokemonUseCase: SearchPokemonUseCase,
     private val pokemonCaughtUseCase: PokemonCaughtUseCase
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _pokemonFound: MutableStateFlow<PokemonViewStates> =
         MutableStateFlow(PokemonViewStates.Idle)
     val pokemonFound = _pokemonFound.asStateFlow()
 
-    var isCaught: Boolean = false
     private var pokemon: PokemonModel? = null
 
-    fun searchPokemon() {
+    fun handleIntent(intent: PokemonHunterIntent) {
+        when (intent) {
+            PokemonHunterIntent.SearchPokemon -> searchPokemon()
+            PokemonHunterIntent.CatchPokemon -> catchPokemon()
+        }
+    }
+
+    private fun searchPokemon() {
         viewModelScope.launch {
             _pokemonFound.emit(PokemonViewStates.Loading)
             executePokemonSearchResult(searchPokemonUseCase())
         }
     }
 
-    fun catchPokemon() {
+   private fun catchPokemon() {
         viewModelScope.launch {
             pokemon?.let {
+                _pokemonFound.emit(PokemonViewStates.Loading)
                 pokemonCaughtUseCase(it)
                 executePokemonSearchResult(searchPokemonUseCase())
             }
@@ -46,10 +52,12 @@ class PokemonHunterViewModel @Inject constructor(
     }
 
     private suspend fun executePokemonSearchResult(result: Result<PokemonModel>) {
-        result.onSuccess {
-            pokemon = it
+        result.onSuccess { pokemonResult ->
+            pokemon = pokemonResult
             checkPokemonCaught()
-            _pokemonFound.emit(PokemonViewStates.PokemonFounded(it))
+            pokemon?.let {
+                _pokemonFound.emit(PokemonViewStates.PokemonFounded(it))
+            }
         }
             .onFailure {
                 _pokemonFound.emit(PokemonViewStates.ErrorDataFound(it.stackTraceToString()))
@@ -59,14 +67,13 @@ class PokemonHunterViewModel @Inject constructor(
 
     private suspend fun checkPokemonCaught() {
         pokemon?.let {
-            isCaught(getBackpackUseCase().first(), it)
+            isCaught(getBackpackUseCase().first())
         }
     }
 
     private fun isCaught(
-        pokemonList: List<PokemonModel>,
-        pokemonFound: PokemonModel
+        pokemonList: List<PokemonModel>
     ) {
-        isCaught = pokemonList.any { it.id == pokemonFound.id }
+        pokemon?.isCaught = pokemonList.any { it.id == pokemon?.id }
     }
 }

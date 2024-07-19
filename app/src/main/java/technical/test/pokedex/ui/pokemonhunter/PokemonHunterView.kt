@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
+import kotlinx.coroutines.flow.StateFlow
 import technical.test.pokedex.R
 import technical.test.pokedex.domain.models.PokemonModel
 import technical.test.pokedex.ui.PokemonViewStates
@@ -36,19 +37,21 @@ import technical.test.pokedex.ui.components.PokemonStatsView
 
 @Composable
 fun PokemonHunterView(
-    viewModel: PokemonHunterViewModel,
-    leaveAction: () -> Unit) {
+    viewState: StateFlow<PokemonViewStates>,
+    handleIntent: (PokemonHunterIntent) -> Unit = {},
+    leaveAction: () -> Unit
+) {
 
-    val pokemonFound by viewModel.pokemonFound.collectAsState()
+    val pokemonFound by viewState.collectAsState()
 
     when (pokemonFound) {
         PokemonViewStates.Idle -> {
-            viewModel.searchPokemon()
+            handleIntent(PokemonHunterIntent.SearchPokemon)
         }
 
         is PokemonViewStates.ErrorDataFound -> {
             ErrorDataFound((pokemonFound as PokemonViewStates.ErrorDataFound).errorMessage) {
-                viewModel.searchPokemon()
+                handleIntent(PokemonHunterIntent.SearchPokemon)
             }
         }
 
@@ -58,10 +61,9 @@ fun PokemonHunterView(
 
         is PokemonViewStates.PokemonFounded -> {
             PokemonFounded((pokemonFound as PokemonViewStates.PokemonFounded).pokemonFunded,
-                viewModel.isCaught,
-                catchAction = { viewModel.catchPokemon() },
+                catchAction = { handleIntent(PokemonHunterIntent.CatchPokemon) },
                 leaveAction = { leaveAction() },
-                searchAction = { viewModel.searchPokemon() })
+                searchAction = { handleIntent(PokemonHunterIntent.SearchPokemon) })
         }
 
         else -> {}
@@ -71,7 +73,6 @@ fun PokemonHunterView(
 @Composable
 fun PokemonFounded(
     pokemon: PokemonModel,
-    pokemonCaught: Boolean,
     catchAction: () -> Unit,
     leaveAction: () -> Unit,
     searchAction: () -> Unit
@@ -98,7 +99,8 @@ fun PokemonFounded(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .padding(dimensionResource(id = R.dimen.margin_md)),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.margin_s))) {
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.margin_s))
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -138,7 +140,7 @@ fun PokemonFounded(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
 
-            if (pokemonCaught) {
+            if (pokemon.isCaught) {
                 Button(
                     onClick = { searchAction() },
                     modifier = Modifier.weight(1f)
@@ -174,8 +176,10 @@ private fun ErrorDataFound(errorMessage: String, buttonAction: () -> Unit) {
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.margin_md)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(text = errorMessage)
         Button(

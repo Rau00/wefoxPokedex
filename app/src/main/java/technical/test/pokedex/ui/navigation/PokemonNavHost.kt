@@ -30,9 +30,10 @@ fun PokemonNavHost(
                 navigateToHunting = { navController.navigate(PokemonHunter) })
         }
         composable<PokemonHunter> {
-            PokemonHunterView(pokemonHunterViewModel) {
-                navController.popBackStack()
-            }
+            PokemonHunterView(
+                viewState = pokemonHunterViewModel.pokemonFound,
+                handleIntent = { pokemonHunterViewModel.handleIntent(it) },
+                leaveAction = { navController.navigateUp() })
         }
         composable<PokemonDetail> { backStackEntry ->
             val pokemonId = backStackEntry.toRoute<PokemonDetail>().pokemonId
