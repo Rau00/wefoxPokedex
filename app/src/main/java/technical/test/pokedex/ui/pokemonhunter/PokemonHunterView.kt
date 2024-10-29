@@ -27,6 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import kotlinx.coroutines.flow.StateFlow
 import technical.test.pokedex.R
@@ -42,12 +43,10 @@ fun PokemonHunterView(
     leaveAction: () -> Unit
 ) {
 
-    val pokemonFound by viewState.collectAsState()
+    val pokemonFound by viewState.collectAsStateWithLifecycle()
 
     when (pokemonFound) {
-        PokemonViewStates.Idle -> {
-            handleIntent(PokemonHunterIntent.SearchPokemon)
-        }
+        PokemonViewStates.Idle -> { }
 
         is PokemonViewStates.ErrorDataFound -> {
             ErrorDataFound((pokemonFound as PokemonViewStates.ErrorDataFound).errorMessage) {

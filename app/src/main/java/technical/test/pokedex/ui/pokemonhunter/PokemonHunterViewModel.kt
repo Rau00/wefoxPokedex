@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import technical.test.pokedex.domain.GetBackpackUseCase
 import technical.test.pokedex.domain.PokemonCaughtUseCase
@@ -24,6 +27,12 @@ class PokemonHunterViewModel @Inject constructor(
     private val _pokemonFound: MutableStateFlow<PokemonViewStates> =
         MutableStateFlow(PokemonViewStates.Idle)
     val pokemonFound = _pokemonFound.asStateFlow()
+        .onStart { searchPokemon() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = PokemonViewStates.Idle
+        )
 
     private var pokemon: PokemonModel? = null
 
